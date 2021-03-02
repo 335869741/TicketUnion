@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Ticket Union</string>
+    <string name="Item_navigation_home">Home</string>
+    <string name="Item_navigation_choiceness">Choiceness</string>
+    <string name="Item_navigation_redpacket">Red Packet</string>
+    <string name="Item_navigation_search">Search</string>
+    <string name="HomeFragment">Home</string>
+    <string name="ChoicenessFragment">Choiceness</string>
+    <string name="RedPacketFragment">RedPacket</string>
+    <string name="SearchFragment">Search</string>
+    <string name="textSob">SOB</string>
+    <string name="textSearch">搜索</string>
+    <string name="QRCode">QR Code</string>
+    <string name="textLoading">Loading……</string>
+    <string name="textError">LoadError</string>
+    <string name="textItemTitle">TextItemTitle</string>s
+    <string name="textItemLabel">textItemLabel</string>
+    <string name="textItemPrice">textItemPrice</string>
+    <string name="textItemCount">textItemCount</string>
+    <string name="imageItemIcon">imageItemIcon</string>
+    <string name="volumeCount">已售%s万</string>
+</resources>
