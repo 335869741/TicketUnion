@@ -5,10 +5,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
@@ -50,9 +52,13 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
             val bundle = Bundle()
             val pictUrl = item.pictUrl
             val title = item.title
-            val clickUrl = item.clickUrl
+            var url = item.couponClickUrl
+            if (TextUtils.isEmpty(url)){
+                url = item.clickUrl
+                Toast.makeText(viewHolder.itemView.context,"来晚了，优惠券领完了！",Toast.LENGTH_SHORT).show()
+            }
             bundle.putParcelable(
-                Constant.KEY_TICKET_PARCELABLE,TicketParcelable(clickUrl,title,pictUrl))
+                Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url,title,pictUrl))
             intent.putExtras(bundle)
             activity.startActivity(intent)
         }

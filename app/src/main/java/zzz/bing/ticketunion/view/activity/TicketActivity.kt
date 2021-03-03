@@ -1,9 +1,10 @@
 package zzz.bing.ticketunion.view.activity
 
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -19,8 +20,6 @@ import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.UrlUtils
 import zzz.bing.ticketunion.viewmodel.TicketViewModel
-import java.lang.Exception
-
 class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
     private var _isTaobaoInstall = false
 
@@ -74,7 +73,7 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
 
         try {
             val packageInfo =
-                packageManager.getPackageInfo("", PackageManager.MATCH_UNINSTALLED_PACKAGES)
+                packageManager.getPackageInfo(Constant.TAOBAO_PAGE_NAME, PackageManager.MATCH_UNINSTALLED_PACKAGES)
             _isTaobaoInstall = packageInfo != null
             LogUtils.d(this,"packageInfo == > $packageInfo")
         }catch (e :PackageManager.NameNotFoundException){
@@ -83,6 +82,24 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
         }
         LogUtils.d(this,"_isTaobaoInstall == > $_isTaobaoInstall")
         binding.buttonTaoCode.text = if (_isTaobaoInstall) "打开淘宝领券" else "复制淘口令"
+    }
+
+    override fun initListener() {
+        binding.buttonTaoCode.setOnClickListener {
+            val taoCode = binding.editTaoCode.text.trim()
+            LogUtils.d(this,"taoCode ==> $taoCode")
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText(Constant.LABEL_COPY_TAO_CODE,taoCode)
+            clipboardManager.setPrimaryClip(clipData)
+            if (_isTaobaoInstall){
+                val intent = Intent()
+                val componentName = ComponentName(Constant.TAOBAO_PAGE_NAME,Constant.TAOBAO_WELCOME_PKG_NAME)
+                intent.component = componentName
+                startActivity(intent)
+            }else{
+                Toast.makeText(this,"复制成功，用打开淘宝使用",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @Suppress("RedundantSamConstructor")
