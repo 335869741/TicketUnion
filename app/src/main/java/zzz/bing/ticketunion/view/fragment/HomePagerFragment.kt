@@ -2,7 +2,6 @@ package zzz.bing.ticketunion.view.fragment
 
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
@@ -13,7 +12,6 @@ import zzz.bing.ticketunion.model.domain.ItemContent
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.view.adapter.HomePagerItemAdapter
-import zzz.bing.ticketunion.view.adapter.HomePagerItemLooperAdapter
 import zzz.bing.ticketunion.viewmodel.HomeViewModel
 import java.util.ArrayList
 
@@ -24,7 +22,7 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     private var _page: Int = 1
     private var _isLoading = false
     private lateinit var _homePagerItemAdapter: HomePagerItemAdapter
-    private lateinit var _homePagerItemLooperAdapter: HomePagerItemLooperAdapter
+//    private lateinit var _homePagerItemLooperAdapter: HomePagerItemLooperAdapter
 
     override fun initViewBinding(): FragmentHomePagerBinding {
         return FragmentHomePagerBinding.inflate(layoutInflater)
@@ -35,7 +33,7 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     }
 
     override fun initView() {
-        _homePagerItemAdapter = HomePagerItemAdapter()
+        _homePagerItemAdapter = HomePagerItemAdapter(requireActivity())
         binding.pagerRecycler.adapter = _homePagerItemAdapter
         binding.pagerRecycler.layoutManager = LinearLayoutManager(requireActivity())
 //        _homePagerItemLooperAdapter = HomePagerItemLooperAdapter()
@@ -62,30 +60,35 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     }
 
     override fun initObserver() {
-        if (_materialId != null) {
+        _materialId?.apply {
+//        if (_materialId != null) {
             //网络数据更新
-            viewModel.categoryItemLiveData.observe(viewLifecycleOwner, Observer {
-                if (it[_materialId] != null) {
+            viewModel.categoryItemLiveData.observe(viewLifecycleOwner, {
+//                if (it[_materialId] != null) {
+                it[_materialId]?.apply {
                     if (_page <= 2){
-                        _homePagerItemAdapter.submitList(it[_materialId])
+                        _homePagerItemAdapter.submitList(this)
                     }else{
                         val list = _homePagerItemAdapter.currentList
                         val item = ArrayList<ItemContent>()
                         item.addAll(list)
-                        item.addAll(it[_materialId]!!)
+                        item.addAll(this)
                         _homePagerItemAdapter.submitList(item)
                         binding.refresh.finishLoadmore()
-                        Toast.makeText(requireActivity(),"加载了${it[_materialId]?.size}数据",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(),"加载了${this.size}数据",Toast.LENGTH_SHORT).show()
                     }
                     _isLoading = false
                 }
             })
 
             //网络加载事件改变
-            viewModel.categoryItemResponse.observe(viewLifecycleOwner, Observer {
-                if (it[_materialId] != null) {
-                    loadState(it[_materialId]!!)
+            viewModel.categoryItemResponse.observe(viewLifecycleOwner, {
+                it[_materialId]?.apply {
+                    loadState(this)
                 }
+//                if (it[_materialId] != null) {
+//                    loadState(it[_materialId]!!)
+//                }
             })
         }
     }

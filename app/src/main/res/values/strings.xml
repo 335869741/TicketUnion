@@ -19,4 +19,7 @@
     <string name="textItemCount">textItemCount</string>
     <string name="imageItemIcon">imageItemIcon</string>
     <string name="volumeCount">已售%s万</string>
+    <string name="imageTaoCode">imageTaoCode</string>
+    <string name="editTaoCode">￥3KsxcBhep8Q￥</string>
+    <string name="buttonTaoCode">buttonTaoCode</string>
 </resources>

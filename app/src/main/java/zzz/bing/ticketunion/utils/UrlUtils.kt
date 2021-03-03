@@ -15,12 +15,20 @@ object UrlUtils {
     }
 
     fun dynamicLoadingUrl(long: Int, url: String): String {
-        var size = (long % 100)+1
-        if (size > 5){
+        var size = (long % 100) + 1
+        if (size > 5) {
             size = 5
-        }else if (size < 1){
+        } else if (size < 1) {
             size = 1
         }
-        return "https:${url}_${size*100}x${size*100}.jpg"
+        return "https:${url}_${size * 100}x${size * 100}.jpg"
+    }
+
+    fun urlJoinHttp(url: String):String {
+        var string = url
+        if (url.startsWith("//")){
+            string = "https:$url"
+        }
+        return string
     }
 }

@@ -9,4 +9,6 @@ object Constant {
     //HOME FRAGMENT PAGE KEY
     const val KEY_TITLE_NAME = "title_name"
     const val KEY_TITLE_MATERIAL_ID = "title_material_id"
+    //HOME PAGER ITEM KEY
+    const val KEY_TICKET_PARCELABLE = "key_ticket_params"
 }
