@@ -35,8 +35,10 @@ class HomePagerItemAdapter : ListAdapter<ItemContent, HomePagerItemViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomePagerItemViewHolder {
         val binding = ItemHomePagerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = HomePagerItemViewHolder(binding)
-        viewHolder.itemView
-//        LogUtils.d(this,"创建Holder==")
+        viewHolder.itemView.setOnClickListener {
+            val item = getItem(viewHolder.adapterPosition)
+            LogUtils.d(this,"item == > $item")
+        }
         return viewHolder
     }
 

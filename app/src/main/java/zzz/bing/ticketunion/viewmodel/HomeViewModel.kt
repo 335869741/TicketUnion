@@ -26,36 +26,46 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         NoMore
     }
 
+    private var _homePageSave: Map<Int, List<ItemContent>>? = null
     private val _retrofit = RetrofitManager.get().retrofit
     private val _api = _retrofit.create<Api>()
     private var _titles = MutableLiveData<List<Title>>().also { netLoadCategoryTitles() }
     private var _categoryTitleResponse = MutableLiveData<NetLoadState>().also { it.value = NetLoadState.Loading }
     private var _categoryItemResponse = MutableLiveData<Map<Int, NetLoadState>>()
     private var _categoryItemList = MutableLiveData<Map<Int, List<ItemContent>>>()
-    private var _categoryLooperList = MutableLiveData<Map<Int,List<ItemContent>>>()
+    private var _categoryLooperList = MutableLiveData<Map<Int, List<ItemContent>>>()
 
-    val categoryLooperList :LiveData<Map<Int,List<ItemContent>>> get() = _categoryLooperList
+    val categoryLooperList: LiveData<Map<Int, List<ItemContent>>> get() = _categoryLooperList
     val categoryTitleResponse: LiveData<NetLoadState> get() = _categoryTitleResponse
     val categoryItemResponse: LiveData<Map<Int, NetLoadState>> get() = _categoryItemResponse
     val titles: LiveData<List<Title>> get() = _titles
     val categoryItemLiveData: LiveData<Map<Int, List<ItemContent>>> get() = _categoryItemList
 
     fun netLoadCategoryItem(materialId: Int, pager: Int) {
+        if (_homePageSave != null && _homePageSave?.containsKey(materialId)!!) {
+            _categoryItemList.postValue(_homePageSave)
+            _categoryItemResponse.postValue(mapOf(materialId to NetLoadState.Successful))
+            return
+        }
         val task = _api.getCategoryItemContent(UrlUtils.createCategoryItemUrl(materialId, pager))
         _categoryItemResponse.postValue(mapOf(materialId to NetLoadState.Loading))
         task.enqueue(object : Callback<CategoryItemContent> {
             override fun onResponse(
-                    call: Call<CategoryItemContent>,
-                    response: Response<CategoryItemContent>
+                call: Call<CategoryItemContent>,
+                response: Response<CategoryItemContent>
             ) {
                 val code = response.code()
                 LogUtils.d(this@HomeViewModel, "code ==> $code")
                 if (code == HttpURLConnection.HTTP_OK) {
                     val itemContent = response.body()?.itemContentList
-                    _categoryItemList.postValue(mapOf(materialId to itemContent!!))
+                    val mapItem = mapOf(materialId to itemContent!!)
+                    _categoryItemList.postValue(mapItem)
 //                    val subList = itemContent.subList(itemContent.size - 5, itemContent.size)
 //                    _categoryLooperList.postValue(mapOf(materialId to subList))
                     _categoryItemResponse.postValue(mapOf(materialId to NetLoadState.Successful))
+                    if (_homePageSave == null) {
+                        _homePageSave = mapItem
+                    }
                     LogUtils.d(this@HomeViewModel, "请求成功 materialId == > $materialId")
                 } else {
                     LogUtils.d(this@HomeViewModel, "请求失败 == > $code")
@@ -101,8 +111,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loadMore(materialId: Int, page: Int) {
-
-    }
+//    fun loadMore(materialId: Int, page: Int) {
+//
+//    }
 
 }
