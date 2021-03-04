@@ -8,9 +8,9 @@ import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.databinding.FragmentHomeBinding
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.view.adapter.HomePagerAdapter
-import zzz.bing.ticketunion.viewmodel.HomeViewModel
+import zzz.bing.ticketunion.viewmodel.MainViewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, MainViewModel>() {
 
     private val _homePagerAdapter by lazy {
         HomePagerAdapter(requireActivity())
@@ -20,8 +20,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         return FragmentHomeBinding.inflate(layoutInflater)
     }
 
-    override fun initViewModel(): HomeViewModel {
-        return ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+    override fun initViewModel(): MainViewModel {
+        return ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun initView() {
@@ -37,11 +37,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         viewModel.categoryTitleResponse.observe(viewLifecycleOwner, Observer { netState ->
             LogUtils.d(this, "Title加载状态改变 $netState")
             binding.loadingLayout.root.visibility =
-                if (netState == HomeViewModel.NetLoadState.Loading) View.VISIBLE else View.GONE
+                if (netState == MainViewModel.NetLoadState.Loading) View.VISIBLE else View.GONE
             binding.loadErrorLayout.root.visibility =
-                if (netState == HomeViewModel.NetLoadState.Error) View.VISIBLE else View.GONE
+                if (netState == MainViewModel.NetLoadState.Error) View.VISIBLE else View.GONE
             binding.homePager.visibility =
-                if (netState == HomeViewModel.NetLoadState.Successful) View.VISIBLE else View.GONE
+                if (netState == MainViewModel.NetLoadState.Successful) View.VISIBLE else View.GONE
         })
 
         viewModel.titles.observe(viewLifecycleOwner, Observer {

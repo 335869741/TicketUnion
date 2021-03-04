@@ -18,4 +18,7 @@ object Constant {
     //taobao page name
     const val TAOBAO_PAGE_NAME = "com.taobao.taobao"
     const val TAOBAO_WELCOME_PKG_NAME = "com.taobao.tao.TBMainActivity"
+
+    //Response ok return 10000
+    const val RESPONSE_OK = 10000
 }

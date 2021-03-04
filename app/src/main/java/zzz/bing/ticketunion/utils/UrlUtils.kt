@@ -21,7 +21,8 @@ object UrlUtils {
         } else if (size < 1) {
             size = 1
         }
-        return "https:${url}_${size * 100}x${size * 100}.jpg"
+        val joinUrl = urlJoinHttp(url)
+        return "${joinUrl}_${size * 100}x${size * 100}.jpg"
     }
 
     fun urlJoinHttp(url: String):String {
@@ -30,5 +31,9 @@ object UrlUtils {
             string = "https:$url"
         }
         return string
+    }
+
+    fun choicenessContentUrl(categoryId: Int): String {
+        return "recommend/${categoryId}/"
     }
 }

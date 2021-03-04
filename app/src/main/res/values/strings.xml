@@ -24,7 +24,11 @@
     <string name="buttonTaoCode">buttonTaoCode</string>
     <string name="textChoicenessCategory">textChoicenessCategory</string>
     <string name="textPrice">textPrice</string>
-    <string name="textCheck">textCheck</string>
+    <string name="textCheck">buy</string>
     <string name="textTitle">textTitle</string>
     <string name="imageIcon">imageIcon</string>
+    <string name="buttonChoicenessBuy">原价%s元</string>
+    <string name="textWarning">你来晚啦，已经领完了</string>
+    <string name="textPreferential">textPreferential</string>
+    <string name="textPreferentialPrompt">领券省%s</string>
 </resources>

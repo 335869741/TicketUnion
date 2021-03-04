@@ -3,48 +3,55 @@ package zzz.bing.ticketunion.model.domain
 import com.google.gson.annotations.SerializedName
 
 data class ChoicenessContent(
-    @SerializedName("code") val code: Int,
-    @SerializedName("data") val ContentResponse: ChoicenessContentResponse,
-    @SerializedName("message") val message: String,
-    @SerializedName("success") val success: Boolean
+    @SerializedName("code")val code: Int,
+    @SerializedName("data")val content: Data,
+    @SerializedName("message")val message: String,
+    @SerializedName("success")val success: Boolean
 )
 
-data class ChoicenessContentResponse(
-    @SerializedName("tbk_uatm_favorites_item_get_response")
-    val tbkContentResponseResponse: TbkChoicenessContentResponseResponse
+data class Data(
+    val tbk_dg_optimus_material_response: TbkDgOptimusMaterialResponse
 )
 
-data class TbkChoicenessContentResponseResponse(
-    @SerializedName("request_id") val requestId: String,
-    @SerializedName("results") val results: Results,
-    @SerializedName("total_results") val totalResults: Int
+data class TbkDgOptimusMaterialResponse(
+    val is_default: String,
+    val request_id: String,
+    val result_list: ResultList,
+    val total_count: Int
 )
 
-data class Results(
-    @SerializedName("favoriteId") val favoriteId: Int,
-    @SerializedName("uatm_tbk_item") val choicenessContentList: List<UatmTbkItem>
+data class ResultList(
+    val map_data: List<MapData>
 )
 
-data class UatmTbkItem @JvmOverloads constructor(
-    @SerializedName("click_url") val clickUrl: String = "",
-    @SerializedName("coupon_click_url") val couponClickUrl: String = "",
-    @SerializedName("coupon_end_time") val couponEndTime: String = "",
-    @SerializedName("coupon_info") val couponInfo: String = "",
-    @SerializedName("coupon_remain_count") val couponRemainCount: Int = 0,
-    @SerializedName("coupon_start_time") val couponStartTime: String = "",
-    @SerializedName("coupon_total_count") val couponTotalCount: Long = 0,
-    @SerializedName("event_end_time") val eventEndTime: String = "",
-    @SerializedName("event_start_time") val eventStartTime: String = "",
-    @SerializedName("item_url") val itemUrl: String = "",
-    @SerializedName("num_iid") val numIid: Long = 0,
-    @SerializedName("pict_url") val pictUrl: String = "",
-    @SerializedName("reserve_price") val reservePrice: String = "",
-    @SerializedName("status") val status: Long = 0,
-    @SerializedName("title") val title: String = "",
-    @SerializedName("tk_rate") val tkRate: String = "",
-    @SerializedName("type") val type: Long = 0,
-    @SerializedName("user_type") val userType: Long = 0,
-    @SerializedName("volume") val volume: Long = 0,
-    @SerializedName("zk_final_price") val zkFinalPrice: String = "",
-    @SerializedName("zk_final_price_wap") val zkFinalPriceWap: String = ""
+data class MapData(
+    val category_id: Int,
+    val click_url: String,
+    val commission_rate: String,
+    val coupon_amount: Int,
+    val coupon_click_url: String,
+    val coupon_end_time: String,
+    val coupon_info: String,
+    val coupon_remain_count: Int,
+    val coupon_share_url: String,
+    val coupon_start_fee: String,
+    val coupon_start_time: String,
+    val coupon_total_count: Int,
+    val item_id: Long,
+    val level_one_category_id: Int,
+    val nick: String,
+    val pict_url: String,
+    val reserve_price: String,
+    val seller_id: Long,
+    val shop_title: String,
+    val small_images: SsmallImages,
+    val title: String,
+    val user_type: Int,
+    val volume: Int,
+    val white_image: String,
+    val zk_final_price: String
+)
+
+data class SsmallImages(
+    val string: List<String>
 )

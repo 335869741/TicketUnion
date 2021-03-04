@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemChoicenessCategoryBinding
 import zzz.bing.ticketunion.model.domain.ChoicenessCategory
+import zzz.bing.ticketunion.viewmodel.MainViewModel
 
-class ChoicenessCategoryAdapter:ListAdapter<ChoicenessCategory,ChoicenessCategoryViewHolder>(
+class ChoicenessCategoryAdapter(val viewModel: MainViewModel):ListAdapter<ChoicenessCategory,ChoicenessCategoryViewHolder>(
     object :DiffUtil.ItemCallback<ChoicenessCategory>(){
         override fun areItemsTheSame(
             oldItem: ChoicenessCategory, newItem: ChoicenessCategory
@@ -32,6 +33,7 @@ class ChoicenessCategoryAdapter:ListAdapter<ChoicenessCategory,ChoicenessCategor
         viewHolder.itemView.setOnClickListener {
             if (_onCheckedId != viewHolder.adapterPosition){
                 _onCheckedId = viewHolder.adapterPosition
+                viewModel.choicenessItemPositionChange(_onCheckedId)
                 notifyDataSetChanged()
             }
         }

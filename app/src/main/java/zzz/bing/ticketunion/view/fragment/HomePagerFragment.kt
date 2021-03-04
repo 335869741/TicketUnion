@@ -12,10 +12,10 @@ import zzz.bing.ticketunion.model.domain.ItemContent
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.view.adapter.HomePagerItemAdapter
-import zzz.bing.ticketunion.viewmodel.HomeViewModel
+import zzz.bing.ticketunion.viewmodel.MainViewModel
 import java.util.ArrayList
 
-class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>() {
+class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, MainViewModel>() {
 
     private var _title: String? = null
     private var _materialId: Int? = null
@@ -28,8 +28,8 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
         return FragmentHomePagerBinding.inflate(layoutInflater)
     }
 
-    override fun initViewModel(): HomeViewModel {
-        return ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
+    override fun initViewModel(): MainViewModel {
+        return ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun initView() {
@@ -47,7 +47,7 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
         binding.loadErrorLayout.root.setOnClickListener {
             if (binding.loadErrorLayout.root.visibility == View.VISIBLE) {
                 viewModel.netLoadCategoryItem(_materialId!!, _page)
-                loadState(HomeViewModel.NetLoadState.Loading)
+                loadState(MainViewModel.NetLoadState.Loading)
             }
         }
         //用户主动加载更多
@@ -103,17 +103,17 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     /**
      * 根据数据加载情况改变视图
      */
-    private fun loadState(netState: HomeViewModel.NetLoadState) {
+    private fun loadState(netState: MainViewModel.NetLoadState) {
         LogUtils.d(this,"page ==> $_page")
         if(_page <= 2){
             binding.loadingLayout.root.visibility =
-            if (netState == HomeViewModel.NetLoadState.Loading) View.VISIBLE else View.GONE
+            if (netState == MainViewModel.NetLoadState.Loading) View.VISIBLE else View.GONE
             binding.loadErrorLayout.root.visibility =
-                if (netState == HomeViewModel.NetLoadState.Error) View.VISIBLE else View.GONE
+                if (netState == MainViewModel.NetLoadState.Error) View.VISIBLE else View.GONE
             binding.pagerRecycler.visibility =
-                if (netState == HomeViewModel.NetLoadState.Successful) View.VISIBLE else View.GONE
+                if (netState == MainViewModel.NetLoadState.Successful) View.VISIBLE else View.GONE
         }
-        if(netState == HomeViewModel.NetLoadState.Error){
+        if(netState == MainViewModel.NetLoadState.Error){
             Toast.makeText(requireActivity(),"加载失败",Toast.LENGTH_SHORT).show()
             binding.refresh.finishLoadmore()
             if (_page > 1){
@@ -129,7 +129,7 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     fun loadData(){
         if (_materialId != null && !_isLoading) {
             if (_materialId == 1){
-                loadState(HomeViewModel.NetLoadState.Loading)
+                loadState(MainViewModel.NetLoadState.Loading)
             }
             viewModel.netLoadCategoryItem(_materialId!!, _page)
             _page++

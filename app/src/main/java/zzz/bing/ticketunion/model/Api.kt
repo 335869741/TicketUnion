@@ -5,10 +5,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Url
-import zzz.bing.ticketunion.model.domain.Category
-import zzz.bing.ticketunion.model.domain.CategoryItemContent
-import zzz.bing.ticketunion.model.domain.TicketTaoCode
-import zzz.bing.ticketunion.model.domain.TicketTaoCodeParams
+import zzz.bing.ticketunion.model.domain.*
 
 interface Api {
 
@@ -20,4 +17,10 @@ interface Api {
 
     @POST("tpwd")
     fun postTicketTaoCode(@Body ticketTaoCodeParams: TicketTaoCodeParams):Call<TicketTaoCode>
+
+    @GET("recommend/categories")
+    fun getChoicenessCategory(): Call<Choiceness>
+
+    @GET
+    fun getChoicenessContent(@Url url: String):Call<ChoicenessContent>
 }

@@ -49,11 +49,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/shape_item_label_background"
-                android:padding="10dp"
+                android:padding="1dp"
                 android:text="@string/textCheck"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imageIcon"
                 app:layout_constraintTop_toBottomOf="@+id/textTitle"
@@ -71,6 +71,32 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textCheck"
                 app:layout_constraintTop_toTopOf="@+id/textCheck" />
+
+            <TextView
+                android:id="@+id/textWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textWarning"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/textCheck"
+                app:layout_constraintEnd_toEndOf="@+id/imageIcon" />
+
+            <TextView
+                android:id="@+id/textPreferential"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape_item_label_background"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:text="@string/textPreferential"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/imageIcon"
+                app:layout_constraintTop_toTopOf="@+id/imageIcon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

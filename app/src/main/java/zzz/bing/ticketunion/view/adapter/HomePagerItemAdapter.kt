@@ -50,15 +50,14 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
             LogUtils.d(this, "item == > $item")
             val intent = Intent(activity, TicketActivity::class.java)
             val bundle = Bundle()
-            val pictUrl = item.pictUrl
+            val picUrl = item.pictUrl
             val title = item.title
             var url = item.couponClickUrl
             if (TextUtils.isEmpty(url)){
                 url = item.clickUrl
                 Toast.makeText(viewHolder.itemView.context,"来晚了，优惠券领完了！",Toast.LENGTH_SHORT).show()
             }
-            bundle.putParcelable(
-                Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url,title,pictUrl))
+            bundle.putParcelable(Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url,title,picUrl))
             intent.putExtras(bundle)
             activity.startActivity(intent)
         }
