@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.databinding.FragmentChoicenessBinding
 import zzz.bing.ticketunion.utils.LogUtils
+import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.view.adapter.ChoicenessCategoryAdapter
 import zzz.bing.ticketunion.view.adapter.ChoicenessContentAdapter
 import zzz.bing.ticketunion.viewmodel.MainViewModel
@@ -39,11 +40,11 @@ class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, MainViewModel
         })
         viewModel.choicenessContentNetState.observe(viewLifecycleOwner, {state ->
             binding.includeLoading.root.visibility =
-                if (state == MainViewModel.NetLoadState.Loading) View.VISIBLE else View.GONE
+                if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
             binding.includeError.root.visibility =
-                if (state == MainViewModel.NetLoadState.Error) View.VISIBLE else View.GONE
+                if (state == NetLoadState.Error) View.VISIBLE else View.GONE
             binding.recyclerContent.visibility =
-                if (state == MainViewModel.NetLoadState.Successful) View.VISIBLE else View.GONE
+                if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
         })
     }
 

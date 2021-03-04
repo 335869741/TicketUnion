@@ -10,19 +10,10 @@ import retrofit2.Response
 import retrofit2.create
 import zzz.bing.ticketunion.model.Api
 import zzz.bing.ticketunion.model.domain.*
-import zzz.bing.ticketunion.utils.Constant
-import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.RetrofitManager
-import zzz.bing.ticketunion.utils.UrlUtils
+import zzz.bing.ticketunion.utils.*
 import java.net.HttpURLConnection
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-    enum class NetLoadState {
-        Loading,
-        Error,
-        Successful,
-        NoMore
-    }
 
     private var _homePageSave: Map<Int, List<ItemContent>>? = null
     private var _choicenessItemPosition = MutableLiveData<Int>()
