@@ -37,6 +37,7 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.title = "淘口令"
+//        binding.toolbar.title = "淘口令"
     }
 
     override fun initData() {
