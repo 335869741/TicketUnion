@@ -22,4 +22,9 @@
     <string name="imageTaoCode">imageTaoCode</string>
     <string name="editTaoCode">￥3KsxcBhep8Q￥</string>
     <string name="buttonTaoCode">buttonTaoCode</string>
+    <string name="textChoicenessCategory">textChoicenessCategory</string>
+    <string name="textPrice">textPrice</string>
+    <string name="textCheck">textCheck</string>
+    <string name="textTitle">textTitle</string>
+    <string name="imageIcon">imageIcon</string>
 </resources>

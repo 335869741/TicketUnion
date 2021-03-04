@@ -123,7 +123,7 @@
 
         <include
             android:id="@+id/loadingLayout"
-            layout="@layout/layout_loading"
+            layout="@layout/include_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -131,7 +131,7 @@
 
         <include
             android:id="@+id/loadErrorLayout"
-            layout="@layout/layout_error"
+            layout="@layout/include_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
