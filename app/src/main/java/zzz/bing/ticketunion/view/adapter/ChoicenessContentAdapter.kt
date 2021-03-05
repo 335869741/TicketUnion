@@ -11,23 +11,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemChoicenessContentBinding
-import zzz.bing.ticketunion.model.domain.MapData
+import zzz.bing.ticketunion.model.domain.ChoicenessContentMapData
 import zzz.bing.ticketunion.model.domain.TicketParcelable
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.UrlUtils
 import zzz.bing.ticketunion.view.activity.TicketActivity
-import zzz.bing.ticketunion.view.fragment.ChoicenessFragment
 
-class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapter<MapData,ChoicenessContentViewHolder>(
-    object :DiffUtil.ItemCallback<MapData>(){
-        override fun areItemsTheSame(oldItem: MapData, newItem: MapData): Boolean {
-            return oldItem.item_id == newItem.item_id
+class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapter<ChoicenessContentMapData,ChoicenessContentViewHolder>(
+    object :DiffUtil.ItemCallback<ChoicenessContentMapData>(){
+        override fun areItemsTheSame(oldItem: ChoicenessContentMapData, newItem: ChoicenessContentMapData): Boolean {
+            return oldItem.itemId == newItem.itemId
         }
 
-        override fun areContentsTheSame(oldItem: MapData, newItem: MapData): Boolean {
+        override fun areContentsTheSame(oldItem: ChoicenessContentMapData, newItem: ChoicenessContentMapData): Boolean {
             return oldItem == newItem
         }
     }
@@ -38,14 +36,14 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
         val viewHolder = ChoicenessContentViewHolder(binding)
         viewHolder.binding.textCheck.setOnClickListener {
             val item = getItem(viewHolder.adapterPosition)
-            var url = item.click_url
-            if (item.coupon_click_url.isNullOrEmpty()){
+            var url = item.clickUrl
+            if (item.couponClickUrl.isNullOrEmpty()){
                 Toast.makeText(viewHolder.itemView.context,"来晚了，优惠券领完了！", Toast.LENGTH_SHORT).show()
             }else{
-                url = item.coupon_click_url
+                url = item.couponClickUrl
             }
             val title = item.title
-            val picUrl = item.pict_url
+            val picUrl = item.pictUrl
             val bundle = Bundle()
             bundle.putParcelable(
                 Constant.KEY_TICKET_PARCELABLE,
@@ -62,14 +60,14 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
     override fun onBindViewHolder(holder: ChoicenessContentViewHolder, position: Int) {
         val item = getItem(position)
         val binding = holder.binding
-        val url = UrlUtils.urlJoinHttp(item.pict_url) //UrlUtils.dynamicLoadingUrl(binding.imageIcon.width,item.pictUrl)
+        val url = UrlUtils.urlJoinHttp(item.pictUrl) //UrlUtils.dynamicLoadingUrl(binding.imageIcon.width,item.pictUrl)
 //        val context = holder.itemView.context
         LogUtils.d(this,"url ==> $url")
-        if (item.coupon_click_url.isNullOrEmpty()){
+        if (item.couponClickUrl.isNullOrEmpty()){
             binding.textPrice.visibility = View.GONE
             binding.textWarning.visibility = View.VISIBLE
         }else{
-            binding.textPrice.text = item.coupon_info
+            binding.textPrice.text = item.couponInfo
         }
         binding.textTitle.text = item.title
 //        binding.textPrice.text = item.coupon_infocontext.getString(R.string.buttonChoicenessBuy,item.reserve_price)

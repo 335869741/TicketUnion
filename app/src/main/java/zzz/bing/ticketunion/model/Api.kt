@@ -23,4 +23,7 @@ interface Api {
 
     @GET
     fun getChoicenessContent(@Url url: String):Call<ChoicenessContent>
+
+    @GET
+    fun getOnSellPage(@Url url: String) :Call<OnSellContent>
 }
