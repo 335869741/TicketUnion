@@ -3,12 +3,14 @@ package zzz.bing.ticketunion.view.fragment
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.databinding.FragmentOnSellBinding
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.NetLoadState
+import zzz.bing.ticketunion.utils.NetLoadStateUtils
 import zzz.bing.ticketunion.view.adapter.OnSellAdapter
 import zzz.bing.ticketunion.viewmodel.OnSellViewModel
 
@@ -26,19 +28,27 @@ class OnSellFragment : BaseFragment<FragmentOnSellBinding, OnSellViewModel>() {
 
     override fun initObserver() {
         viewModel.onSellMapData.observe(viewLifecycleOwner, { list ->
-            LogUtils.d(this ,"list ==> $list")
-            if (viewModel.onSellPage == 1){
+            LogUtils.d(this, "list ==> $list")
+            if (viewModel.onSellPage == 1) {
                 _onSellAdapter.submitList(list)
-            }else{
+            } else {
                 val allList = _onSellAdapter.currentList
                 allList.addAll(list)
                 _onSellAdapter.submitList(allList)
             }
         })
-        viewModel.onSellNetState.observe(viewLifecycleOwner, {state ->
-            binding.includeLoading.root.visibility = if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
-            binding.includeError.root.visibility = if (state == NetLoadState.Error) View.VISIBLE else View.GONE
-            binding.constraint.visibility = if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
+        viewModel.onSellNetState.observe(viewLifecycleOwner, {
+            val state = if (it == NetLoadState.Loading && viewModel.onSellPage != 1) {
+                NetLoadState.Successful
+            } else {
+                it
+            }
+            NetLoadStateUtils.viewStateChange(
+                binding.includeLoading.root,
+                binding.includeError.root,
+                binding.constraint,
+                state
+            )
         })
     }
 
@@ -49,15 +59,26 @@ class OnSellFragment : BaseFragment<FragmentOnSellBinding, OnSellViewModel>() {
         activity.supportActionBar?.setHomeButtonEnabled(true)
         activity.supportActionBar?.title = "每日特惠"
 
+        binding.refresh.setEnableLoadmore(true)
+        binding.refresh.setEnableRefresh(false)
+
         binding.recyclerOnSell.adapter = _onSellAdapter
-        binding.recyclerOnSell.layoutManager = GridLayoutManager(view?.context,2)
+        binding.recyclerOnSell.layoutManager = GridLayoutManager(view?.context, 2)
     }
 
     override fun initListener() {
         binding.includeError.root.setOnClickListener {
-            if (viewModel.onSellNetState.value == NetLoadState.Error){
+            if (viewModel.onSellNetState.value == NetLoadState.Error) {
                 viewModel.loadOnSell()
             }
         }
+        binding.refresh.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                if (viewModel.onSellNetState.value == NetLoadState.Loading) {
+                    return
+                }
+                viewModel.loadOnSell()
+            }
+        })
     }
 }

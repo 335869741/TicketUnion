@@ -32,20 +32,15 @@
         tools:visibility="visible">
 
         <include
-            android:id="@+id/toolbar"
-            layout="@layout/include_title_banck"
+            android:id="@+id/includeToolbar"
+            layout="@layout/include_title_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/app_theme"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-            app:titleTextColor="@color/white" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/imageTaoCode"

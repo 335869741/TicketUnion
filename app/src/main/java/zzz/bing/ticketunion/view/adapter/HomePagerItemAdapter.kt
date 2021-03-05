@@ -22,7 +22,9 @@ import zzz.bing.ticketunion.databinding.ItemHomePagerBinding
 import zzz.bing.ticketunion.model.domain.ItemContent
 import zzz.bing.ticketunion.model.domain.TicketParcelable
 import zzz.bing.ticketunion.utils.Constant
+import zzz.bing.ticketunion.utils.Constant.TOAST_PROMPT
 import zzz.bing.ticketunion.utils.LogUtils
+import zzz.bing.ticketunion.utils.TsUtils
 import zzz.bing.ticketunion.utils.UrlUtils
 import zzz.bing.ticketunion.view.activity.TicketActivity
 import java.text.DecimalFormat
@@ -55,7 +57,7 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
             var url = item.couponClickUrl
             if (TextUtils.isEmpty(url)){
                 url = item.clickUrl
-                Toast.makeText(viewHolder.itemView.context,"来晚了，优惠券领完了！",Toast.LENGTH_SHORT).show()
+                TsUtils.ts(viewHolder.itemView.context,Constant.TOAST_PROMPT)
             }
             bundle.putParcelable(Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url,title,picUrl))
             intent.putExtras(bundle)

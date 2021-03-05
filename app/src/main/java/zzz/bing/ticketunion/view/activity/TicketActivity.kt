@@ -16,10 +16,7 @@ import zzz.bing.ticketunion.BaseActivity
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ActivityTicketBinding
 import zzz.bing.ticketunion.model.domain.TicketParcelable
-import zzz.bing.ticketunion.utils.Constant
-import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.NetLoadState
-import zzz.bing.ticketunion.utils.UrlUtils
+import zzz.bing.ticketunion.utils.*
 import zzz.bing.ticketunion.viewmodel.TicketViewModel
 class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
     private var _isTaobaoInstall = false
@@ -35,11 +32,11 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
     }
 
     override fun initView() {
-        setSupportActionBar(binding.toolbar.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.title = "淘口令"
-//        binding.toolbar.title = "淘口令"
+//        setSupportActionBar(binding.includeToolbar.toolbar)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setHomeButtonEnabled(true)
+//        supportActionBar?.title = "淘口令"
+        binding.includeToolbar.toolbar.title = "淘口令"
     }
 
     override fun initData() {
@@ -73,7 +70,7 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
                 intent.component = componentName
                 startActivity(intent)
             }else{
-                Toast.makeText(this,"复制成功，用打开淘宝使用",Toast.LENGTH_SHORT).show()
+                TsUtils.ts(this,"复制成功，用打开淘宝使用")
             }
         }
         binding.includeError.root.setOnClickListener {
@@ -89,9 +86,15 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
             binding.editTaoCode.setText(string)
         })
         viewModel.netState.observe(this,{state ->
-            binding.includeLoading.root.visibility = if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
-            binding.includeError.root.visibility = if (state == NetLoadState.Error) View.VISIBLE else View.GONE
-            binding.constraint.visibility = if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
+//            binding.includeLoading.root.visibility = if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
+//            binding.includeError.root.visibility = if (state == NetLoadState.Error) View.VISIBLE else View.GONE
+//            binding.constraint.visibility = if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
+            NetLoadStateUtils.viewStateChange(
+                binding.includeLoading.root,
+                binding.includeError.root,
+                binding.constraint,
+                state
+            )
         })
     }
 

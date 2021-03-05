@@ -12,6 +12,7 @@ import zzz.bing.ticketunion.model.domain.ItemContent
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.NetLoadState
+import zzz.bing.ticketunion.utils.NetLoadStateUtils
 import zzz.bing.ticketunion.view.adapter.HomePagerItemAdapter
 import zzz.bing.ticketunion.viewmodel.HomeViewModel
 import java.util.ArrayList
@@ -107,12 +108,18 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>(
     private fun loadState(netState: NetLoadState) {
         LogUtils.d(this,"page ==> $_page")
         if(_page <= 2){
-            binding.loadingLayout.root.visibility =
-            if (netState == NetLoadState.Loading) View.VISIBLE else View.GONE
-            binding.loadErrorLayout.root.visibility =
-                if (netState == NetLoadState.Error) View.VISIBLE else View.GONE
-            binding.pagerRecycler.visibility =
-                if (netState == NetLoadState.Successful) View.VISIBLE else View.GONE
+//            binding.loadingLayout.root.visibility =
+//            if (netState == NetLoadState.Loading) View.VISIBLE else View.GONE
+//            binding.loadErrorLayout.root.visibility =
+//                if (netState == NetLoadState.Error) View.VISIBLE else View.GONE
+//            binding.pagerRecycler.visibility =
+//                if (netState == NetLoadState.Successful) View.VISIBLE else View.GONE
+            NetLoadStateUtils.viewStateChange(
+                binding.loadingLayout.root,
+                binding.loadErrorLayout.root,
+                binding.pagerRecycler,
+                netState
+            )
         }
         if(netState == NetLoadState.Error){
             Toast.makeText(requireActivity(),"加载失败",Toast.LENGTH_SHORT).show()
