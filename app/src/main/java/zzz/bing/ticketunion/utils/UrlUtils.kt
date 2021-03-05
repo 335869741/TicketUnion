@@ -36,4 +36,8 @@ object UrlUtils {
     fun choicenessContentUrl(categoryId: Int): String {
         return "recommend/${categoryId}/"
     }
+
+    fun onSellPageUrl(page: Int): String {
+        return "onSell/${page}"
+    }
 }
