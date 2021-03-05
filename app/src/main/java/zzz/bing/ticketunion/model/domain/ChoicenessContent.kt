@@ -4,54 +4,54 @@ import com.google.gson.annotations.SerializedName
 
 data class ChoicenessContent(
     @SerializedName("code")val code: Int,
-    @SerializedName("data")val content: Data,
+    @SerializedName("data")val content: ChoicenessContentData,
     @SerializedName("message")val message: String,
     @SerializedName("success")val success: Boolean
 )
 
-data class Data(
-    val tbk_dg_optimus_material_response: TbkDgOptimusMaterialResponse
+data class ChoicenessContentData(
+    @SerializedName("tbk_dg_optimus_material_response")val content: ChoicenessContentResponse
 )
 
-data class TbkDgOptimusMaterialResponse(
-    val is_default: String,
-    val request_id: String,
-    val result_list: ResultList,
-    val total_count: Int
+data class ChoicenessContentResponse(
+    @SerializedName("is_default")val isDefault: String,
+    @SerializedName("request_id")val requestId: String,
+    @SerializedName("result_list")val choicenessContentList: ChoicenessContentList,
+    @SerializedName("total_count")val totalCount: Int
 )
 
-data class ResultList(
-    val map_data: List<MapData>
+data class ChoicenessContentList(
+    @SerializedName("map_data")val ContentListMapData: List<ChoicenessContentMapData>
 )
 
-data class MapData(
-    val category_id: Int,
-    val click_url: String,
-    val commission_rate: String,
-    val coupon_amount: Int,
-    val coupon_click_url: String,
-    val coupon_end_time: String,
-    val coupon_info: String,
-    val coupon_remain_count: Int,
-    val coupon_share_url: String,
-    val coupon_start_fee: String,
-    val coupon_start_time: String,
-    val coupon_total_count: Int,
-    val item_id: Long,
-    val level_one_category_id: Int,
-    val nick: String,
-    val pict_url: String,
-    val reserve_price: String,
-    val seller_id: Long,
-    val shop_title: String,
-    val small_images: SsmallImages,
-    val title: String,
-    val user_type: Int,
-    val volume: Int,
-    val white_image: String,
-    val zk_final_price: String
+data class ChoicenessContentMapData(
+    @SerializedName("category_id")val categoryId: Int,
+    @SerializedName("click_url")val clickUrl: String,
+    @SerializedName("commission_rate")val commissionRate: String,
+    @SerializedName("coupon_amount")val couponAmount: Int,
+    @SerializedName("coupon_click_url")val couponClickUrl: String,
+    @SerializedName("coupon_end_time")val couponEndTime: String,
+    @SerializedName("coupon_info")val couponInfo: String,
+    @SerializedName("coupon_remain_count")val couponRemainCount: Int,
+    @SerializedName("coupon_share_url")val couponShareUrl: String,
+    @SerializedName("coupon_start_fee")val couponStartFee: String,
+    @SerializedName("coupon_start_time")val couponStartTime: String,
+    @SerializedName("coupon_total_count")val couponTotalCount: Int,
+    @SerializedName("item_id")val itemId: Long,
+    @SerializedName("level_one_category_id")val levelOneCategoryId: Int,
+    @SerializedName("nick")val nick: String,
+    @SerializedName("pict_url")val pictUrl: String,
+    @SerializedName("reserve_price")val reservePrice: String,
+    @SerializedName("seller_id")val sellerId: Long,
+    @SerializedName("shop_title")val shopTitle: String,
+    @SerializedName("small_images")val smallImages: ChoicenessContentSsmallImages,
+    @SerializedName("title")val title: String,
+    @SerializedName("user_type")val userType: Int,
+    @SerializedName("volume")val volume: Int,
+    @SerializedName("white_image")val white_image: String,
+    @SerializedName("zk_final_price")val zkfinalPrice: String
 )
 
-data class SsmallImages(
-    val string: List<String>
+data class ChoicenessContentSsmallImages(
+    @SerializedName("string")val string: List<String>
 )

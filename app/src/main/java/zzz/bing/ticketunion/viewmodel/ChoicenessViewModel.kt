@@ -12,7 +12,7 @@ import zzz.bing.ticketunion.model.Api
 import zzz.bing.ticketunion.model.domain.Choiceness
 import zzz.bing.ticketunion.model.domain.ChoicenessCategory
 import zzz.bing.ticketunion.model.domain.ChoicenessContent
-import zzz.bing.ticketunion.model.domain.MapData
+import zzz.bing.ticketunion.model.domain.ChoicenessContentMapData
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.RetrofitManager
@@ -25,12 +25,12 @@ class ChoicenessViewModel(application: Application): AndroidViewModel(applicatio
     private var _choicenessItemPosition = MutableLiveData<Int>()
     private var _choicenessContentNetState = MutableLiveData<MainViewModel.NetLoadState>()
     private var _choicenessCategoryList = MutableLiveData<List<ChoicenessCategory>>()
-    private var _choicenessContentList = MutableLiveData<List<MapData>>()
+    private var _choicenessContentList = MutableLiveData<List<ChoicenessContentMapData>>()
 
     val choicenessContentNetState: LiveData<MainViewModel.NetLoadState> get() = _choicenessContentNetState
     val choicenessPositionItem: LiveData<Int> get() = _choicenessItemPosition
     val choicenessCategoryList: LiveData<List<ChoicenessCategory>> get() = _choicenessCategoryList
-    val choicenessContentList: LiveData<List<MapData>> get() = _choicenessContentList
+    val choicenessContentList: LiveData<List<ChoicenessContentMapData>> get() = _choicenessContentList
 
     fun choicenessItemPositionChange(itemPosition:Int){
         _choicenessItemPosition.postValue(itemPosition)
@@ -50,7 +50,6 @@ class ChoicenessViewModel(application: Application): AndroidViewModel(applicatio
                 }
             }
             override fun onFailure(call: Call<Choiceness>, t: Throwable) {
-//                TODO("Not yet implemented")
                 netLoadChoicenessCategory()
                 LogUtils.d(this@ChoicenessViewModel, "Throwable ==> $t")
             }
@@ -67,7 +66,7 @@ class ChoicenessViewModel(application: Application): AndroidViewModel(applicatio
                 call: Call<ChoicenessContent>, response: Response<ChoicenessContent>
             ) {
                 if (response.code() == HttpURLConnection.HTTP_OK && response.body()?.code == Constant.RESPONSE_OK){
-                    val content = response.body()?.content?.tbk_dg_optimus_material_response?.result_list?.map_data
+                    val content = response.body()?.content?.content?.choicenessContentList?.ContentListMapData
                     LogUtils.d(this@ChoicenessViewModel,"response ==> ${response.body()}")
                     LogUtils.d(this@ChoicenessViewModel,"content ==> $content")
                     _choicenessContentNetState.postValue(MainViewModel.NetLoadState.Successful)
