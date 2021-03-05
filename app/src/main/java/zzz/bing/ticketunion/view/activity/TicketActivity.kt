@@ -18,10 +18,12 @@ import zzz.bing.ticketunion.databinding.ActivityTicketBinding
 import zzz.bing.ticketunion.model.domain.TicketParcelable
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
+import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.utils.UrlUtils
 import zzz.bing.ticketunion.viewmodel.TicketViewModel
 class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
     private var _isTaobaoInstall = false
+    private var ticketParcelable:TicketParcelable? = null
 
     override fun getViewBinding(): ActivityTicketBinding {
         return ActivityTicketBinding.inflate(layoutInflater)
@@ -42,35 +44,8 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
 
     override fun initData() {
         val bundle = intent.extras!!
-        val ticketParcelable =
-            bundle.getParcelable<TicketParcelable>(Constant.KEY_TICKET_PARCELABLE)
-        viewModel.load(ticketParcelable!!)
-        val url = UrlUtils.urlJoinHttp(ticketParcelable.pic)
-        Glide.with(this)
-            .load(url)
-            .placeholder(R.drawable.ic_photo_placeholder)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    binding.progressBar2.visibility = View.GONE
-                    return false
-                }
-            })
-            .into(binding.imageTaoCode)
+        ticketParcelable = bundle.getParcelable(Constant.KEY_TICKET_PARCELABLE)
+        loadData()
 
         try {
             val packageInfo =
@@ -101,6 +76,11 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
                 Toast.makeText(this,"复制成功，用打开淘宝使用",Toast.LENGTH_SHORT).show()
             }
         }
+        binding.includeError.root.setOnClickListener {
+            if (viewModel.netState.value == NetLoadState.Error){
+                loadData()
+            }
+        }
     }
 
     @Suppress("RedundantSamConstructor")
@@ -108,10 +88,45 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
         viewModel.taoCode.observe(this, Observer { string ->
             binding.editTaoCode.setText(string)
         })
+        viewModel.netState.observe(this,{state ->
+            binding.includeLoading.root.visibility = if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
+            binding.includeError.root.visibility = if (state == NetLoadState.Error) View.VISIBLE else View.GONE
+            binding.constraint.visibility = if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    fun loadData(){
+        viewModel.load(ticketParcelable!!)
+        val url = UrlUtils.urlJoinHttp(ticketParcelable!!.pic)
+        Glide.with(this)
+            .load(url)
+            .placeholder(R.drawable.ic_photo_placeholder)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progressBar2.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(binding.imageTaoCode)
     }
 }
