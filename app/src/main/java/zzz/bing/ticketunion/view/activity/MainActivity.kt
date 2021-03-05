@@ -17,6 +17,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun initView() {
         //androidx.fragment.app.FragmentContainerView获取navController的方式
 //        (supportFragmentManager.findFragmentById(R.id.fragment) as NavHostFragment).findNavController()
+//        父类实现
         val navController = findNavigationById(R.id.navHostFragment)
 
 //        //menu item id和 navigation fragment id必须一致

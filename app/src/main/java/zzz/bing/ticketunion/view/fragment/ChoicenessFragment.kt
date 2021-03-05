@@ -8,9 +8,10 @@ import zzz.bing.ticketunion.databinding.FragmentChoicenessBinding
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.view.adapter.ChoicenessCategoryAdapter
 import zzz.bing.ticketunion.view.adapter.ChoicenessContentAdapter
+import zzz.bing.ticketunion.viewmodel.ChoicenessViewModel
 import zzz.bing.ticketunion.viewmodel.MainViewModel
 
-class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, MainViewModel>() {
+class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, ChoicenessViewModel>() {
     private val _categoryAdapter by lazy { ChoicenessCategoryAdapter(viewModel) }
     private val _contentAdapter by lazy { ChoicenessContentAdapter(requireActivity()) }
     private var _index = 0
@@ -19,8 +20,8 @@ class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, MainViewModel
         return FragmentChoicenessBinding.inflate(layoutInflater)
     }
 
-    override fun initViewModel(): MainViewModel {
-        val vm by viewModels<MainViewModel>()
+    override fun initViewModel(): ChoicenessViewModel {
+        val vm by viewModels<ChoicenessViewModel>()
         return vm
     }
 

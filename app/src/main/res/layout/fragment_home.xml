@@ -111,7 +111,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
                 app:tabBackground="@color/app_theme"
                 app:tabMode="auto"
-                app:tabRippleColor="@color/tab_selected_color"
+                app:tabIndicatorColor="@color/white"
+                app:tabRippleColor="@color/tab_default_color"
                 app:tabSelectedTextColor="@color/tab_selected_color"
                 app:tabTextColor="@color/tab_default_color" />
 
