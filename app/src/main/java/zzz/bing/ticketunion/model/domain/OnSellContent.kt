@@ -1,6 +1,7 @@
 package zzz.bing.ticketunion.model.domain
 
 import com.google.gson.annotations.SerializedName
+import zzz.bing.ticketunion.model.action.ITicketActivity
 
 data class OnSellContent(
     @SerializedName("code")val code: Int,
@@ -46,11 +47,31 @@ data class OnSellMapData(
     @SerializedName("seller_id")val sellerId: Long,
     @SerializedName("shop_title")val shopTitle: Any,
     @SerializedName("small_images")val smallImages: OnSellContentSmallImages,
-    @SerializedName("title")val title: String,
+    @SerializedName("title")val _title: String,
     @SerializedName("user_type")val userType: Int,
     @SerializedName("volume")val volume: Int,
     @SerializedName("zk_final_price")val zkFinalprice: String
-)
+) : ITicketActivity {
+    override fun getTitle(): String {
+        return _title
+    }
+
+    override fun getUrl(): String {
+        return if (isNoMore()){
+            this.clickUrl
+        }else{
+            this.couponClickUrl
+        }
+    }
+
+    override fun getPic(): String {
+        return this.pictUrl
+    }
+
+    override fun isNoMore(): Boolean {
+        return this.couponClickUrl.isNullOrEmpty()
+    }
+}
 
 data class OnSellContentSmallImages(
     @SerializedName("string")val string: List<String>

@@ -8,6 +8,12 @@
     tools:context=".view.activity.TicketActivity">
 
     <include
+        android:id="@+id/includeToolbar"
+        layout="@layout/include_title_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
         android:id="@+id/includeLoading"
         layout="@layout/include_loading"
         android:layout_width="match_parent"
@@ -30,17 +36,6 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         tools:visibility="visible">
-
-        <include
-            android:id="@+id/includeToolbar"
-            layout="@layout/include_title_back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/imageTaoCode"

@@ -1,6 +1,7 @@
 package zzz.bing.ticketunion.model.domain
 
 import com.google.gson.annotations.SerializedName
+import zzz.bing.ticketunion.model.action.ITicketActivity
 
 data class ChoicenessContent(
     @SerializedName("code")val code: Int,
@@ -45,12 +46,29 @@ data class ChoicenessContentMapData(
     @SerializedName("seller_id")val sellerId: Long,
     @SerializedName("shop_title")val shopTitle: String,
     @SerializedName("small_images")val smallImages: ChoicenessContentSsmallImages,
-    @SerializedName("title")val title: String,
+    @SerializedName("title")val _title: String,
     @SerializedName("user_type")val userType: Int,
     @SerializedName("volume")val volume: Int,
     @SerializedName("white_image")val white_image: String,
     @SerializedName("zk_final_price")val zkfinalPrice: String
-)
+) : ITicketActivity {
+    override fun getTitle(): String {
+        return _title
+    }
+
+    override fun getUrl(): String {
+        return if (isNoMore()) this.clickUrl else this.couponClickUrl
+    }
+
+    override fun getPic(): String {
+        return this.pictUrl
+    }
+
+    @Suppress("UselessCallOnNotNull")
+    override fun isNoMore(): Boolean {
+        return this.couponClickUrl.isNullOrEmpty()
+    }
+}
 
 data class ChoicenessContentSsmallImages(
     @SerializedName("string")val string: List<String>

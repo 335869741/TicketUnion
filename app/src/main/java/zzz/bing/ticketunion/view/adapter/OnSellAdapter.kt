@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +12,7 @@ import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemOnSellContentBinding
 import zzz.bing.ticketunion.model.domain.OnSellMapData
 import zzz.bing.ticketunion.model.domain.TicketParcelable
+import zzz.bing.ticketunion.utils.ActionActivity
 import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.TsUtils
 import zzz.bing.ticketunion.utils.UrlUtils
@@ -36,18 +35,9 @@ class OnSellAdapter():ListAdapter<OnSellMapData,OnSellViewHolder>(
         val binding = ItemOnSellContentBinding.inflate(LayoutInflater.from(parent.context), parent,false)
         val viewHolder = OnSellViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
-            val item = getItem(viewHolder.adapterPosition)
             val context = viewHolder.itemView.context
-            var url = item.couponClickUrl
-            if (item.couponClickUrl.isNullOrEmpty()){
-                TsUtils.ts(context,Constant.TOAST_PROMPT)
-                url = item.clickUrl
-            }
-            val bundle = Bundle()
-            bundle.putParcelable(Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url, item.title, item.pictUrl))
-            val intent = Intent(context, TicketActivity::class.java)
-            intent.putExtras(bundle)
-            context.startActivity(intent)
+            val item = getItem(viewHolder.adapterPosition)
+            ActionActivity.actionTicketActivity(context,item)
         }
         return viewHolder
     }
@@ -58,7 +48,7 @@ class OnSellAdapter():ListAdapter<OnSellMapData,OnSellViewHolder>(
         val url = UrlUtils.urlJoinHttp(item.pictUrl)
         val binding = holder.binding
 
-        binding.textTitle.text = item.title
+        binding.textTitle.text = item._title
         val amount = item.couponAmount.toDouble()
         val price = DecimalFormat("0.0").format(item.zkFinalprice.toDouble() - amount)
         val string = content.getString(R.string.onSellPrice,item.zkFinalprice,price)

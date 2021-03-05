@@ -1,6 +1,7 @@
 package zzz.bing.ticketunion.model.domain
 
 import com.google.gson.annotations.SerializedName
+import zzz.bing.ticketunion.model.action.ITicketActivity
 
 data class CategoryItemContent(
     @SerializedName("code")     val code: Int,
@@ -9,6 +10,7 @@ data class CategoryItemContent(
     @SerializedName("success")  val success: Boolean
 )
 
+@Suppress("UselessCallOnNotNull")
 data class ItemContent(
     @SerializedName("category_id")      val categoryId: Long,
     @SerializedName("category_name")    val categoryName: Any,
@@ -32,11 +34,27 @@ data class ItemContent(
     @SerializedName("seller_id")        val sellerId: Long,
     @SerializedName("shop_title")       val shopTitle: String,
     @SerializedName("small_images")     val smallImages: SmallImages,
-    @SerializedName("title")            val title: String,
+    @SerializedName("title")            val _title: String,
     @SerializedName("user_type")        val userType: Int,
     @SerializedName("volume")           val volume: Long,
     @SerializedName("zk_final_price")   val zkFinalPrice: String
-)
+) : ITicketActivity {
+    override fun getTitle(): String {
+        return _title
+    }
+
+    override fun getUrl(): String {
+        return if (isNoMore()) this.clickUrl else this.couponClickUrl
+    }
+
+    override fun getPic(): String {
+        return pictUrl
+    }
+
+    override fun isNoMore(): Boolean {
+        return this.couponClickUrl.isNullOrEmpty()
+    }
+}
 
 data class SmallImages(
     @SerializedName("string")           val string: List<String>

@@ -1,11 +1,8 @@
 package zzz.bing.ticketunion.view.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -13,11 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import zzz.bing.ticketunion.databinding.ItemChoicenessContentBinding
 import zzz.bing.ticketunion.model.domain.ChoicenessContentMapData
-import zzz.bing.ticketunion.model.domain.TicketParcelable
-import zzz.bing.ticketunion.utils.Constant
+import zzz.bing.ticketunion.utils.ActionActivity
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.UrlUtils
-import zzz.bing.ticketunion.view.activity.TicketActivity
 
 class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapter<ChoicenessContentMapData,ChoicenessContentViewHolder>(
     object :DiffUtil.ItemCallback<ChoicenessContentMapData>(){
@@ -36,22 +31,8 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
         val viewHolder = ChoicenessContentViewHolder(binding)
         viewHolder.binding.textCheck.setOnClickListener {
             val item = getItem(viewHolder.adapterPosition)
-            var url = item.clickUrl
-            if (item.couponClickUrl.isNullOrEmpty()){
-                Toast.makeText(viewHolder.itemView.context,"来晚了，优惠券领完了！", Toast.LENGTH_SHORT).show()
-            }else{
-                url = item.couponClickUrl
-            }
-            val title = item.title
-            val picUrl = item.pictUrl
-            val bundle = Bundle()
-            bundle.putParcelable(
-                Constant.KEY_TICKET_PARCELABLE,
-                TicketParcelable(url,title,picUrl)
-            )
-            val intent = Intent(activity, TicketActivity::class.java)
-            intent.putExtras(bundle)
-            activity.startActivity(intent)
+            val context = viewHolder.itemView.context
+            ActionActivity.actionTicketActivity(context,item)
         }
         return viewHolder
     }
@@ -74,7 +55,7 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
         }else{
             binding.textPrice.text = item.couponInfo
         }
-        binding.textTitle.text = item.title
+        binding.textTitle.text = item._title
 //        binding.textPrice.text = item.coupon_infocontext.getString(R.string.buttonChoicenessBuy,item.reserve_price)
 //        binding.textPreferential.text = context.getString(R.string.textPreferentialPrompt,item.zk_final_price)
         Glide.with(holder.itemView.context)

@@ -1,16 +1,12 @@
 package zzz.bing.ticketunion.view.adapter
 
-import android.content.Intent
 import android.graphics.Color
-import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
-import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
@@ -20,13 +16,7 @@ import com.bumptech.glide.Glide
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemHomePagerBinding
 import zzz.bing.ticketunion.model.domain.ItemContent
-import zzz.bing.ticketunion.model.domain.TicketParcelable
-import zzz.bing.ticketunion.utils.Constant
-import zzz.bing.ticketunion.utils.Constant.TOAST_PROMPT
-import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.TsUtils
-import zzz.bing.ticketunion.utils.UrlUtils
-import zzz.bing.ticketunion.view.activity.TicketActivity
+import zzz.bing.ticketunion.utils.*
 import java.text.DecimalFormat
 
 
@@ -49,19 +39,8 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
         val viewHolder = HomePagerItemViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
             val item = getItem(viewHolder.adapterPosition)
-            LogUtils.d(this, "item == > $item")
-            val intent = Intent(activity, TicketActivity::class.java)
-            val bundle = Bundle()
-            val picUrl = item.pictUrl
-            val title = item.title
-            var url = item.couponClickUrl
-            if (TextUtils.isEmpty(url)){
-                url = item.clickUrl
-                TsUtils.ts(viewHolder.itemView.context,Constant.TOAST_PROMPT)
-            }
-            bundle.putParcelable(Constant.KEY_TICKET_PARCELABLE,TicketParcelable(url,title,picUrl))
-            intent.putExtras(bundle)
-            activity.startActivity(intent)
+            val context = viewHolder.itemView.context
+            ActionActivity.actionTicketActivity(context,item)
         }
         return viewHolder
     }
@@ -69,7 +48,7 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
     override fun onBindViewHolder(holder: HomePagerItemViewHolder, position: Int) {
 //        (holder.binding as ItemHomePagerBinding).
         val item = getItem(position)
-        holder.binding.textItemTitle.text = item.title
+        holder.binding.textItemTitle.text = item._title
         //学习使用SpannableString来定义一个textView中不同分段的样式
         val text = " 省 ${item.couponAmount}元 "
 //        val colorWhite = holder.itemView.context.getColor(R.color.white)

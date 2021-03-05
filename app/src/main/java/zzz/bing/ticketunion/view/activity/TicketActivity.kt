@@ -32,11 +32,11 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
     }
 
     override fun initView() {
-//        setSupportActionBar(binding.includeToolbar.toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar?.setHomeButtonEnabled(true)
-//        supportActionBar?.title = "淘口令"
-        binding.includeToolbar.toolbar.title = "淘口令"
+        setSupportActionBar(binding.includeToolbar.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.title = "淘口令"
+//        binding.includeToolbar.toolbar.title = "淘口令"
     }
 
     override fun initData() {
@@ -86,9 +86,6 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
             binding.editTaoCode.setText(string)
         })
         viewModel.netState.observe(this,{state ->
-//            binding.includeLoading.root.visibility = if (state == NetLoadState.Loading) View.VISIBLE else View.GONE
-//            binding.includeError.root.visibility = if (state == NetLoadState.Error) View.VISIBLE else View.GONE
-//            binding.constraint.visibility = if (state == NetLoadState.Successful) View.VISIBLE else View.GONE
             NetLoadStateUtils.viewStateChange(
                 binding.includeLoading.root,
                 binding.includeError.root,
