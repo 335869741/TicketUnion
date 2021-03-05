@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/redPacketFragment"
         android:name="zzz.bing.ticketunion.view.fragment.OnSellFragment"
-        android:label="@string/RedPacketFragment" />
+        android:label="@string/OnSellFragment" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="zzz.bing.ticketunion.view.fragment.SearchFragment"

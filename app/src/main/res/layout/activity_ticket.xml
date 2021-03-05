@@ -12,7 +12,9 @@
         layout="@layout/include_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:visibility="visible"
+        tools:visibility="gone" />
 
     <include
         android:id="@+id/includeError"
@@ -23,13 +25,15 @@
         android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/constraint"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <androidx.appcompat.widget.Toolbar
+        <include
             android:id="@+id/toolbar"
+            layout="@layout/include_title_banck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/app_theme"

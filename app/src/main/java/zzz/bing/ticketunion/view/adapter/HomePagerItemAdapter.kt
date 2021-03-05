@@ -112,8 +112,7 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
         )
         holder.binding.textItemPrice.append(priceSpannable)
         val count = DecimalFormat("0.0").format(item.volume.toDouble() / 10000)
-        holder.binding.textItemCount.text =
-            holder.itemView.context.getString(R.string.volumeCount, count)
+        holder.binding.textItemCount.text = holder.itemView.context.getString(R.string.volumeCount, count)
 
         val width = holder.binding.imageItemIcon.width
         val height = holder.binding.imageItemIcon.height

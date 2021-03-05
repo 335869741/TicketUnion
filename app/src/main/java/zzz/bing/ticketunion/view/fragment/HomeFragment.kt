@@ -9,9 +9,9 @@ import zzz.bing.ticketunion.databinding.FragmentHomeBinding
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.view.adapter.HomePagerAdapter
-import zzz.bing.ticketunion.viewmodel.MainViewModel
+import zzz.bing.ticketunion.viewmodel.HomeViewModel
 
-class HomeFragment : BaseFragment<FragmentHomeBinding, MainViewModel>() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val _homePagerAdapter by lazy {
         HomePagerAdapter(requireActivity())
@@ -21,8 +21,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, MainViewModel>() {
         return FragmentHomeBinding.inflate(layoutInflater)
     }
 
-    override fun initViewModel(): MainViewModel {
-        return ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    override fun initViewModel(): HomeViewModel {
+        return ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
     }
 
     override fun initView() {

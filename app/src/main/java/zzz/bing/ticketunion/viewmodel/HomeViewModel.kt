@@ -13,7 +13,7 @@ import zzz.bing.ticketunion.model.domain.*
 import zzz.bing.ticketunion.utils.*
 import java.net.HttpURLConnection
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private var _homePageSave: Map<Int, List<ItemContent>>? = null
     //    private val _retrofit = RetrofitManager.get().retrofit
@@ -47,7 +47,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 response: Response<CategoryItemContent>
             ) {
                 val code = response.code()
-                LogUtils.d(this@MainViewModel, "code ==> $code")
+                LogUtils.d(this@HomeViewModel, "code ==> $code")
                 if (code == HttpURLConnection.HTTP_OK) {
                     val itemContent = response.body()?.itemContentList
                     val mapItem = mapOf(materialId to itemContent!!)
@@ -58,15 +58,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     if (_homePageSave == null) {
                         _homePageSave = mapItem
                     }
-                    LogUtils.d(this@MainViewModel, "请求成功 materialId == > $materialId")
+                    LogUtils.d(this@HomeViewModel, "请求成功 materialId == > $materialId")
                 } else {
-                    LogUtils.d(this@MainViewModel, "请求失败 == > $code")
+                    LogUtils.d(this@HomeViewModel, "请求失败 == > $code")
                     _categoryItemResponse.postValue(mapOf(materialId to NetLoadState.Error))
                 }
             }
 
             override fun onFailure(call: Call<CategoryItemContent>, t: Throwable) {
-                LogUtils.d(this@MainViewModel, "请求出现意外 == > $t")
+                LogUtils.d(this@HomeViewModel, "请求出现意外 == > $t")
                 _categoryItemResponse.postValue(mapOf(materialId to NetLoadState.Error))
             }
         })
@@ -77,20 +77,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         task.enqueue(object : Callback<Category> {
             override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 val code = response.code()
-                LogUtils.d(this@MainViewModel, "code ==> $code")
+                LogUtils.d(this@HomeViewModel, "code ==> $code")
                 if (code == HttpURLConnection.HTTP_OK) {
                     val category = response.body()
-                    LogUtils.d(this@MainViewModel, "请求成功 category == > $category")
+                    LogUtils.d(this@HomeViewModel, "请求成功 category == > $category")
                     _titles.postValue(category?.titles)
                     _categoryTitleResponse.postValue(NetLoadState.Successful)
                 } else {
-                    LogUtils.d(this@MainViewModel, "请求失败 == > $code")
+                    LogUtils.d(this@HomeViewModel, "请求失败 == > $code")
                     _categoryTitleResponse.postValue(NetLoadState.Error)
                 }
             }
 
             override fun onFailure(call: Call<Category>, t: Throwable) {
-                LogUtils.d(this@MainViewModel, "请求出现意外 == > $t")
+                LogUtils.d(this@HomeViewModel, "请求出现意外 == > $t")
                 _categoryTitleResponse.postValue(NetLoadState.Error)
             }
         })

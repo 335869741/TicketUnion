@@ -6,7 +6,7 @@
     <string name="Item_navigation_search">Search</string>
     <string name="HomeFragment">Home</string>
     <string name="ChoicenessFragment">Choiceness</string>
-    <string name="RedPacketFragment">RedPacket</string>
+    <string name="OnSellFragment">OnSell</string>
     <string name="SearchFragment">Search</string>
     <string name="textSob">SOB</string>
     <string name="textSearch">搜索</string>
@@ -31,4 +31,6 @@
     <string name="textWarning">你来晚啦，已经领完了</string>
     <string name="textPreferential">textPreferential</string>
     <string name="textPreferentialPrompt">领券省%s</string>
+    <string name="imageOnSellIcon">imageOnSellIcon</string>
+    <string name="onSellPrice">￥%s  券后价:%s</string>
 </resources>

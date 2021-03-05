@@ -1,6 +1,7 @@
 package zzz.bing.ticketunion.view.fragment
 
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import zzz.bing.ticketunion.BaseFragment
@@ -10,7 +11,6 @@ import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.view.adapter.ChoicenessCategoryAdapter
 import zzz.bing.ticketunion.view.adapter.ChoicenessContentAdapter
 import zzz.bing.ticketunion.viewmodel.ChoicenessViewModel
-import zzz.bing.ticketunion.viewmodel.MainViewModel
 
 class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, ChoicenessViewModel>() {
     private val _categoryAdapter by lazy { ChoicenessCategoryAdapter(viewModel) }
@@ -32,8 +32,9 @@ class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, ChoicenessVie
             _categoryAdapter.submitList(list)
             viewModel.netLoadChoicenessContent(list[0].favoritesId)
         })
-        viewModel.choicenessContentList.observe(viewLifecycleOwner, {
-            _contentAdapter.submitList(it)
+        viewModel.choicenessContentList.observe(viewLifecycleOwner, {list ->
+            LogUtils.d(this,"list ==> $list")
+            _contentAdapter.submitList(list)
         })
         viewModel.choicenessPositionItem.observe(viewLifecycleOwner,{ item ->
             val favoritesId = viewModel.choicenessCategoryList.value?.get(item)?.favoritesId!!
@@ -57,10 +58,16 @@ class ChoicenessFragment : BaseFragment<FragmentChoicenessBinding, ChoicenessVie
     }
 
     override fun initView() {
+//        val activity = requireActivity() as AppCompatActivity
+//        activity.setSupportActionBar(binding.includeTitle.toolbarTitle)
+//        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        activity.supportActionBar?.setHomeButtonEnabled(true)
+//        activity.supportActionBar?.title = "每日特惠"
+
         binding.recyclerCategory.adapter = _categoryAdapter
-        binding.recyclerCategory.layoutManager = LinearLayoutManager(requireActivity())
+        binding.recyclerCategory.layoutManager = LinearLayoutManager(view?.context)
         binding.recyclerContent.adapter = _contentAdapter
-        binding.recyclerContent.layoutManager = LinearLayoutManager(requireActivity())
+        binding.recyclerContent.layoutManager = LinearLayoutManager(view?.context)
     }
 
     override fun initData() {

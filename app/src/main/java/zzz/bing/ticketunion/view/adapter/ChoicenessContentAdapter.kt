@@ -60,6 +60,11 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
     override fun onBindViewHolder(holder: ChoicenessContentViewHolder, position: Int) {
         val item = getItem(position)
         val binding = holder.binding
+        if (item.pictUrl.isNullOrEmpty()){
+            binding.textPrice.visibility = View.GONE
+            binding.textWarning.visibility = View.VISIBLE
+            return
+        }
         val url = UrlUtils.urlJoinHttp(item.pictUrl) //UrlUtils.dynamicLoadingUrl(binding.imageIcon.width,item.pictUrl)
 //        val context = holder.itemView.context
         LogUtils.d(this,"url ==> $url")

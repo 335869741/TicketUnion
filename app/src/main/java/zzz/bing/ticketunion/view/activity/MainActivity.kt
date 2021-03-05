@@ -6,9 +6,9 @@ import zzz.bing.ticketunion.BaseActivity
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ActivityMainBinding
 import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.viewmodel.MainViewModel
+import zzz.bing.ticketunion.viewmodel.HomeViewModel
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+class MainActivity : BaseActivity<ActivityMainBinding, HomeViewModel>() {
 
     override fun getViewBinding(): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
@@ -33,8 +33,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun initViewModel(): MainViewModel {
-        return ViewModelProvider(this).get(MainViewModel::class.java)
+    override fun initViewModel(): HomeViewModel {
+        return ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
 }

@@ -13,10 +13,10 @@ import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.view.adapter.HomePagerItemAdapter
-import zzz.bing.ticketunion.viewmodel.MainViewModel
+import zzz.bing.ticketunion.viewmodel.HomeViewModel
 import java.util.ArrayList
 
-class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, MainViewModel>() {
+class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, HomeViewModel>() {
 
     private var _title: String? = null
     private var _materialId: Int? = null
@@ -29,8 +29,8 @@ class HomePagerFragment : BaseFragment<FragmentHomePagerBinding, MainViewModel>(
         return FragmentHomePagerBinding.inflate(layoutInflater)
     }
 
-    override fun initViewModel(): MainViewModel {
-        return ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    override fun initViewModel(): HomeViewModel {
+        return ViewModelProvider(requireActivity()).get(HomeViewModel::class.java)
     }
 
     override fun initView() {
