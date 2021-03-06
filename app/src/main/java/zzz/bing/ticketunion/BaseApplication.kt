@@ -13,6 +13,7 @@ class BaseApplication :Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = baseContext
+
 //        RxTool.init(this)
     }
 }

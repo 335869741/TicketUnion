@@ -26,4 +26,7 @@ object Constant {
 
     //Toast prompt
     const val TOAST_PROMPT = "你来晚啦，已经领完了"
+
+    //DataBase Version
+    const val DATABASE_VERSION = 1
 }

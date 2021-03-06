@@ -1,7 +1,8 @@
 package zzz.bing.ticketunion.model.action
 
-import zzz.bing.ticketunion.model.domain.TicketParcelable
-
+/**
+ * 跳转TicketActivity需要的数据
+ */
 interface ITicketActivity {
     fun getTitle(): String
     fun getUrl(): String
