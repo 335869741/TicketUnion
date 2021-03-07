@@ -17,6 +17,10 @@
         <activity android:name=".view.activity.TicketActivity"
             android:launchMode="singleTop"/>
         <activity android:name=".view.activity.MainActivity">
+
+        </activity>
+        <activity android:name=".view.activity.TestActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

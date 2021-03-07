@@ -13,5 +13,6 @@
     <color name="tab_default_color">#AAEEEEEE</color>
     <color name="red">#FFFF0000</color>
     <color name="gray">#888888</color>
+    <color name="gray_pass">#66666666</color>
     <color name="choicenessCategory">#EEEEEE</color>
 </resources>
