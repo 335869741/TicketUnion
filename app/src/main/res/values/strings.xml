@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">Ticket Union</string>
-    <string name="Item_navigation_home">Home</string>
-    <string name="Item_navigation_choiceness">Choiceness</string>
-    <string name="Item_navigation_redpacket">Red Packet</string>
-    <string name="Item_navigation_search">Search</string>
-    <string name="HomeFragment">Home</string>
-    <string name="ChoicenessFragment">Choiceness</string>
-    <string name="OnSellFragment">OnSell</string>
-    <string name="SearchFragment">Search</string>
+    <string name="Item_navigation_home">首页</string>
+    <string name="Item_navigation_choiceness">精选</string>
+    <string name="Item_navigation_on_sell">特惠</string>
+    <string name="Item_navigation_search">搜索</string>
+    <string name="HomeFragment">首页</string>
+    <string name="ChoicenessFragment">精选</string>
+    <string name="OnSellFragment">特惠</string>
+    <string name="SearchFragment">搜索</string>
     <string name="textSob">SOB</string>
     <string name="textSearch">搜索</string>
     <string name="QRCode">QR Code</string>
-    <string name="textLoading">Loading……</string>
-    <string name="textError">LoadError</string>
+    <string name="textLoading">加载中……</string>
+    <string name="textError">加载错误，请稍后重试</string>
     <string name="textItemTitle">TextItemTitle</string>s
     <string name="textItemLabel">textItemLabel</string>
     <string name="textItemPrice">textItemPrice</string>
@@ -33,4 +33,9 @@
     <string name="textPreferentialPrompt">领券省%s</string>
     <string name="imageOnSellIcon">imageOnSellIcon</string>
     <string name="onSellPrice">￥%s  券后价:%s</string>
+    <string name="editTextSearch">editTextSearch</string>
+    <string name="textSearchButton">搜索</string>
+    <string name="textSearchHistory">textSearchHistory</string>
+    <string name="imageSearchHistory">imageSearchHistory</string>
+    <string name="textRecommended">热搜推荐</string>
 </resources>

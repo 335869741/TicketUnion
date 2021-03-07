@@ -10,11 +10,14 @@ import zzz.bing.ticketunion.db.entity.SearchHistory
 interface SearchHistoryDao {
 
     @Insert
-    fun insertSearchHistory(vararg historyS: SearchHistory)
+    suspend fun insertSearchHistory(vararg historyS: SearchHistory)
 
     @Query("DELETE FROM search_history")
-    fun deleteAllSearchHistory()
+    suspend fun deleteAllSearchHistory()
 
     @Query("SELECT * FROM search_history")
     fun findAllSearchHistory(): LiveData<List<SearchHistory>>
+
+    @Query("SELECT * FROM search_history where search_text = :searchText")
+    suspend fun findSearchHistoryBySearchText(searchText:String) :List<SearchHistory>
 }

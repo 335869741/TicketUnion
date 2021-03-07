@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,11 +26,19 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val _api = RetrofitManager.get().retrofit.create(Api::class.java)
     private val _searchHistoryRepository by lazy { SearchHistoryRepository() }
 
-    val searchRecommend: MutableLiveData<List<SearchRecommendContent>> by lazy { MutableLiveData() }
-    val searchContent: MutableLiveData<List<SearchData>> by lazy { MutableLiveData() }
-    val searchHistory: LiveData<List<SearchHistory>> by lazy { _searchHistoryRepository.getAllSearchHistory() }
+    private val _searchRecommend: MutableLiveData<List<SearchRecommendContent>> by lazy { MutableLiveData() }
+    private val _searchContent: MutableLiveData<List<SearchData>> by lazy { MutableLiveData() }
+    private val _searchHistory: LiveData<List<SearchHistory>> by lazy { _searchHistoryRepository.getAllSearchHistory() }
 
-    fun loadSearchRecommend() {
+    val searchRecommend:LiveData<List<SearchRecommendContent>> get() = _searchRecommend
+    val searchContent:LiveData<List<SearchData>> get() = _searchContent
+    val searchHistory:LiveData<List<SearchHistory>> get() = _searchHistory
+
+    init {
+        loadSearchRecommend()
+    }
+
+     fun loadSearchRecommend() {
         _api.getSearchRecommend().enqueue(object : Callback<SearchRecommend> {
             override fun onResponse(
                 call: Call<SearchRecommend>,
@@ -36,14 +47,13 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 if (response.code() == HttpURLConnection.HTTP_OK && response.body()?.code == Constant.RESPONSE_OK) {
                     val body = response.body()?.searchRecommendList
                     LogUtils.d(this@SearchViewModel, "searchRecommend ==> $body")
-                    searchRecommend.postValue(body)
+                    _searchRecommend.postValue(body)
                 } else {
                     LogUtils.d(this@SearchViewModel, "code == ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<SearchRecommend>, t: Throwable) {
-//                TODO("Not yet implemented")
                 LogUtils.d(this@SearchViewModel, "Throwable ==> $t")
             }
         })
@@ -60,21 +70,24 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                     val body =
                         response.body()?.SearchPageData?.searchPageDataResponse?.resultList?.searchPageDataList
                     LogUtils.d(this@SearchViewModel, "body ==> $body")
-                    searchContent.postValue(body)
+                    _searchContent.postValue(body)
                 } else {
                     LogUtils.d(this@SearchViewModel, "code == ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<SearchPageContent>, t: Throwable) {
-//                TODO("Not yet implemented")
                 LogUtils.d(this@SearchViewModel, "Throwable ==> $t")
             }
         })
     }
 
     fun addSearchHistory(searchText: String) {
-        _searchHistoryRepository.addSearchHistory(searchText)
+        viewModelScope.launch {
+            if (isExist(searchText)){
+                _searchHistoryRepository.addSearchHistory(searchText)
+            }
+        }
     }
 
     fun deleteSearchHistory() {
@@ -85,6 +98,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 //        searchHistory = _searchHistoryRepository.getAllSearchHistory()
 //    }
 
-
+    private suspend fun isExist(string: String): Boolean{
+        val list = _searchHistoryRepository.getSearchHistory(string)
+        return list.isNullOrEmpty()
+    }
 
 }

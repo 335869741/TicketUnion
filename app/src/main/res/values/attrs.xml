@@ -9,7 +9,7 @@
         <attr name="textMarginRight" format="dimension" />
         <attr name="textMaxLength" format="integer" />
         <attr name="textColor" format="color|reference" />
-        <!--        <attr name="textBackground" format="reference"/>-->
         <attr name="textBackground" format="reference"/>
+        <attr name="flowTextSize" format="dimension"/>
     </declare-styleable>
 </resources>

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:textBackground="@drawable/selector_flow_text"
-
         app:textMargin="10dp"
         app:textMarginRight="0dp"
         app:textMarginBottom="0dp"/>

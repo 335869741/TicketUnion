@@ -8,7 +8,7 @@ import zzz.bing.ticketunion.db.dao.SearchHistoryDao
 import zzz.bing.ticketunion.db.entity.SearchHistory
 import zzz.bing.ticketunion.utils.Constant
 
-@Database(entities = [SearchHistory::class],version = Constant.DATABASE_VERSION)
+@Database(entities = [SearchHistory::class],version = Constant.DATABASE_VERSION, exportSchema = true)
 abstract class SearchHistoryDatabase :RoomDatabase(){
     abstract fun userSearchHistoryDao(): SearchHistoryDao
 

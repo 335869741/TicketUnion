@@ -1,5 +1,6 @@
 package zzz.bing.ticketunion.customview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -10,20 +11,23 @@ import androidx.core.view.setPadding
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.utils.SizeUtils
 
-const val FLOW_TEXT_MAX_LINE = 3
-const val FLOW_TEXT_MARGIN = 0f
-const val FLOW_TEXT_MAX_LENGTH = 10
-const val FLOW_TEXT_UNDEFINED = -1
-
 class FlowText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
+    companion object{
+        const val FLOW_TEXT_MAX_LINE = -1
+        const val FLOW_TEXT_MARGIN = 0f
+        const val FLOW_TEXT_MAX_LENGTH = 10
+        const val FLOW_TEXT_UNDEFINED = -1
+        const val FLOW_TEXT_DEFAULT_SIZE = -1
+    }
     private var _maxLine: Int
     private var _textMarginTop: Int
     private var _textMarginLeft: Int
     private var _textMarginBottom: Int
     private var _textMarginRight: Int
     private var _textMaxLength: Int
+    private var _flowTextSize: Float
     private var _textColor: Int
     private var _textBackground: Int
 
@@ -42,11 +46,12 @@ class FlowText @JvmOverloads constructor(
         _textMarginBottom  = typedArray.getDimension(R.styleable.FlowText_textMarginBottom, textMargin).toInt()
         _textMarginRight  = typedArray.getDimension(R.styleable.FlowText_textMarginRight, textMargin).toInt()
         _textMaxLength = typedArray.getInt(R.styleable.FlowText_textMaxLength, FLOW_TEXT_MAX_LENGTH)
+        _flowTextSize = typedArray.getDimension(R.styleable.FlowText_flowTextSize,FLOW_TEXT_DEFAULT_SIZE.toFloat())
 
         _textColor = typedArray.getResourceId(R.styleable.FlowText_textColor, FLOW_TEXT_UNDEFINED)
 //        LogUtils.d(this,"_textColor == > $_textColor")
         if (_textColor == FLOW_TEXT_UNDEFINED){
-            _textColor = typedArray.getColor(R.styleable.FlowText_textColor, resources.getColor(R.color.gray, null))
+            _textColor = typedArray.getColor(R.styleable.FlowText_textColor, resources.getColor(R.color.textColor, null))
             _isColorResourceId = false
 //            LogUtils.d(this,"_textColor == > $_textColor")
         }
@@ -64,7 +69,7 @@ class FlowText @JvmOverloads constructor(
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        val fistChild =  getChildAt(0)
+        val fistChild = getChildAt(0) ?: return
         var pointerLeft = _textMarginLeft
         var pointerTop = _textMarginTop
         var pointerRight = _textMarginRight
@@ -95,8 +100,7 @@ class FlowText @JvmOverloads constructor(
         _textList.forEach { string ->
             val textView = TextView(context)
             textView.text = string
-            textView.setPadding(SizeUtils.dip2px(context,3f))
-            textView.background = ContextCompat.getDrawable(context, _textBackground)
+            textView.setPadding(SizeUtils.dip2px(3f))
             textView.isClickable = true
             textView.setTextColor(
                 if (_isColorResourceId) ContextCompat.getColor(context, _textColor) else _textColor
@@ -106,12 +110,20 @@ class FlowText @JvmOverloads constructor(
                 textView.background = ContextCompat.getDrawable(context, _textBackground)
             }
             textView.setOnClickListener { view ->
-                _onItemClickListener?.itemClickListener(view, string)
+                _onItemClickListener?.apply {
+                    itemClickListener(view, string)
+                }
             }
+            textView.maxLines = 1
+            if(_flowTextSize != FLOW_TEXT_DEFAULT_SIZE.toFloat() && _flowTextSize > 1){
+                textView.textSize = _flowTextSize
+            }
+            textView.setFadingEdgeLength(_textMaxLength)
             addView(textView)
         }
     }
 
+    @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
@@ -134,8 +146,12 @@ class FlowText @JvmOverloads constructor(
             if (line.size != 0) {
                 val isCanAdd = checkChildCanAdd(line, child, parentWidth)
                 if (!isCanAdd){
-                    line = ArrayList()
-                    _lines.add(line)
+                    if (_maxLine == FLOW_TEXT_MAX_LINE || _lines.size < _maxLine){
+                        line = ArrayList()
+                        _lines.add(line)
+                    }else{
+                        break
+                    }
                 }
             }
             line.add(child)
@@ -152,7 +168,7 @@ class FlowText @JvmOverloads constructor(
         totalWidth += child?.measuredWidth!! + _textMarginLeft + _textMarginRight
         return totalWidth < parentWidth
     }
-    public fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
         _onItemClickListener = onItemClickListener
     }
 

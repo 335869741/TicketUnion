@@ -12,7 +12,7 @@
     <item
         android:id="@+id/redPacketFragment"
         android:icon="@drawable/ic_navigation_redpacket"
-        android:title="@string/Item_navigation_redpacket" />
+        android:title="@string/Item_navigation_on_sell" />
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/ic_navigation_search"

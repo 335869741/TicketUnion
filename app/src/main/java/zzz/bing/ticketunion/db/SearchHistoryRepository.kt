@@ -34,4 +34,8 @@ class SearchHistoryRepository {
         return _searchHistoryDao.findAllSearchHistory()
     }
 
+    suspend fun getSearchHistory(searchText:String):List<SearchHistory>{
+        return _searchHistoryDao.findSearchHistoryBySearchText(searchText)
+    }
+
 }

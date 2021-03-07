@@ -1,18 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/SearchFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/app_theme"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="8"
+            android:autofillHints=""
+            android:background="@drawable/shape_text_box_bg"
+            android:ems="10"
+            android:hint="@string/editTextSearch"
+            android:inputType="textPersonName"
+            android:maxLength="20"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/textSearchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/textSearchButton"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/include_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <include
+        layout="@layout/include_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintSearchHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textSearchHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textSearchHistory"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageSearchHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/imageSearchHistory"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <zzz.bing.ticketunion.customview.FlowText
+            android:id="@+id/flowTextSearchHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flowTextSize="6sp"
+            app:maxLine="4"
+            app:textBackground="@drawable/selector_flow_text"
+            app:textMarginLeft="5dp"
+            app:textMarginTop="5dp"
+            app:textMaxLength="10" />
+
+        <TextView
+            android:id="@+id/textRecommended"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textRecommended" />
+
+        <zzz.bing.ticketunion.customview.FlowText
+            android:id="@+id/flowTextRecommended"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:flowTextSize="6sp"
+            app:maxLine="4"
+            app:textBackground="@drawable/selector_flow_text"
+            app:textMarginLeft="5dp"
+            app:textMarginTop="5dp"
+            app:textMaxLength="10" />
+    </LinearLayout>
+
+</FrameLayout>
