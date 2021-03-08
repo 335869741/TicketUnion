@@ -1,6 +1,7 @@
 package zzz.bing.ticketunion.model.domain
 
 import com.google.gson.annotations.SerializedName
+import zzz.bing.ticketunion.model.action.ITicketActivity
 
 data class SearchPageContent(
     @SerializedName("code")val code: Int,
@@ -65,16 +66,33 @@ data class SearchData(
     @SerializedName("shop_title")val shopTitle: String,
     @SerializedName("short_title")val shortTitle: String,
     @SerializedName("small_images")val smallImages: SearchDataSmallImages,
-    @SerializedName("title")val title: String,
+    @SerializedName("title")val _title: String,
     @SerializedName("tk_total_commi")val tkTotalCommi: String,
     @SerializedName("tk_total_sales")val tkTotalSales: String,
-    @SerializedName("url")val url: String,
+    @SerializedName("url")val _url: String,
     @SerializedName("user_type")val userType: Int,
     @SerializedName("volume")val volume: Int,
     @SerializedName("white_image")val whiteImage: String,
     @SerializedName("x_id")val xId: String,
     @SerializedName("zk_final_price")val zkFinalPrice: String
-)
+) : ITicketActivity {
+    override fun getTitle(): String {
+        return _title
+    }
+
+    override fun getUrl(): String {
+        return if (isNoMore()) this.itemUrl else this.couponShareUrl
+    }
+
+    override fun getPic(): String {
+        return this.pictUrl
+    }
+
+    @Suppress("UselessCallOnNotNull")
+    override fun isNoMore(): Boolean {
+        return couponShareUrl.isNullOrEmpty()
+    }
+}
 
 data class SearchDataSmallImages(
     val string: List<String>

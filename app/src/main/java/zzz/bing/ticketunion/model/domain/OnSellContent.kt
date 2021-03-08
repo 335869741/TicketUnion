@@ -68,6 +68,7 @@ data class OnSellMapData(
         return this.pictUrl
     }
 
+    @Suppress("UselessCallOnNotNull")
     override fun isNoMore(): Boolean {
         return this.couponClickUrl.isNullOrEmpty()
     }

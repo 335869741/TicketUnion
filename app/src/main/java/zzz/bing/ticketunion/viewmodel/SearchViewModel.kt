@@ -32,6 +32,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     val searchContent: LiveData<List<SearchData>> get() = _searchContent
     val searchHistory: LiveData<List<SearchHistory>> get() = _searchHistory
     val searchLoadState: LiveData<NetLoadState> get() = _searchLoadState
+    var isLoadMore:Boolean = false
 
     private var _searchText: String? = null
     private var _searchPage: Int? = null
@@ -60,13 +61,9 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         })
     }
 
-    fun loadSearchContent(page: Int, keyword: String) {
+    private fun loadSearchContent(page: Int, keyword: String) {
         _searchLoadState.value = NetLoadState.Loading
-        _searchText = keyword
-        _searchPage = page
-        val map = mapOf<String,String>("page" to page.toString(),"keyword" to keyword)
-//        _api.getSearchContent(page, keyword)
-//        _api.getSearchContent("search?page=$page&keyword=$keyword")
+        val map = mapOf("page" to page.toString(),"keyword" to keyword)
         _api.getSearchContent(map)
             .enqueue(object :
             Callback<SearchPageContent> {
@@ -77,18 +74,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 if (response.code() == HttpURLConnection.HTTP_OK && response.body()?.code == Constant.RESPONSE_OK) {
                     val body =
                         response.body()?.SearchPageData?.searchPageDataResponse?.resultList?.searchPageDataList
-                    LogUtils.d(this@SearchViewModel, "body ==> $body")
                     _searchContent.postValue(body)
                     _searchLoadState.value = NetLoadState.Successful
                 } else {
-                    LogUtils.d(this@SearchViewModel, "code == ${response.code()}")
-                    LogUtils.d(this@SearchViewModel, "body ==> ${response.body()}")
                     _searchLoadState.value = NetLoadState.Error
                 }
             }
 
             override fun onFailure(call: Call<SearchPageContent>, t: Throwable) {
-                LogUtils.d(this@SearchViewModel, "Throwable ==> $t")
                 _searchLoadState.value = NetLoadState.Error
             }
         })
@@ -114,6 +107,20 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     fun reLoad(){
         if (_searchPage != null && !_searchText.isNullOrEmpty()){
+            loadSearchContent(_searchPage!!, _searchText!!)
+        }
+    }
+
+    fun load(page: Int, keyword: String){
+        isLoadMore = false
+        _searchText = keyword
+        _searchPage = page
+        loadSearchContent(page, keyword)
+    }
+
+    fun loadMore(){
+        if (_searchPage != null && !_searchText.isNullOrEmpty()){
+            isLoadMore = true
             loadSearchContent(_searchPage!!, _searchText!!)
         }
     }

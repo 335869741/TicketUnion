@@ -38,12 +38,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun initObserver() {
         viewModel.categoryTitleResponse.observe(viewLifecycleOwner, Observer { netState ->
             LogUtils.d(this, "Title加载状态改变 $netState")
-//            binding.loadingLayout.root.visibility =
-//                if (netState == NetLoadState.Loading) View.VISIBLE else View.GONE
-//            binding.loadErrorLayout.root.visibility =
-//                if (netState == NetLoadState.Error) View.VISIBLE else View.GONE
-//            binding.homePager.visibility =
-//                if (netState == NetLoadState.Successful) View.VISIBLE else View.GONE
             NetLoadStateUtils.viewStateChange(
                 binding.loadingLayout.root,
                 binding.loadErrorLayout.root,

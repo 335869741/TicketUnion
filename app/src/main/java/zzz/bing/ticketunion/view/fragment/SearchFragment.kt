@@ -1,23 +1,21 @@
 package zzz.bing.ticketunion.view.fragment
 
 import android.app.AlertDialog
-import android.content.DialogInterface
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.customview.FlowText
 import zzz.bing.ticketunion.databinding.FragmentSearchBinding
+import zzz.bing.ticketunion.model.domain.SearchData
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.utils.NetLoadStateUtils
 import zzz.bing.ticketunion.view.adapter.SearchContentAdapter
-import zzz.bing.ticketunion.viewmodel.HomeViewModel
 import zzz.bing.ticketunion.viewmodel.SearchViewModel
 import java.lang.StringBuilder
 import java.util.ArrayList
@@ -26,7 +24,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     private var _queryState = false
     private val _editString = StringBuilder()
     private val _adapter by lazy { SearchContentAdapter() }
-    private var _page = 1
 
     override fun initViewBinding(): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(layoutInflater)
@@ -44,6 +41,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     override fun initView() {
         binding.recycler.adapter = _adapter
         binding.recycler.layoutManager = LinearLayoutManager(view?.context)
+        binding.refresh.setEnableLoadmore(true)
+        binding.refresh.setEnableRefresh(false)
     }
 
     override fun initObserver() {
@@ -81,7 +80,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         viewModel.searchContent.observe(viewLifecycleOwner, {list ->
             list?.apply {
                 if (isNotEmpty()){
-                    _adapter.submitList(this)
+                    if (viewModel.isLoadMore){
+                        val array = ArrayList<SearchData>()
+                        array.addAll(_adapter.currentList)
+                        array.addAll(list)
+                        _adapter.submitList(array)
+                        binding.refresh.finishLoadmore()
+                    }else{
+                        _adapter.submitList(this)
+                    }
                 }
             }
         })
@@ -89,12 +96,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
          * 加载状态
          */
         viewModel.searchLoadState.observe(viewLifecycleOwner, {state ->
-            NetLoadStateUtils.viewStateChange(
-                binding.includeLoading.root,
-                binding.includeLoadError.root,
-                binding.refresh,
-                state
-            )
+            if (!viewModel.isLoadMore){
+                LogUtils.d(this,"state ==> $state || isLoadMore ==> ${viewModel.isLoadMore}")
+                NetLoadStateUtils.viewStateChange(
+                    binding.includeLoading.root,
+                    binding.includeLoadError.root,
+                    binding.refresh,
+                    state
+                )
+            }
             binding.key.visibility = View.GONE
         })
     }
@@ -181,11 +191,18 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 }
             }
         }
+        //重新加载
         binding.includeLoadError.root.setOnClickListener {
             if (viewModel.searchLoadState.value == NetLoadState.Error){
                 viewModel.reLoad()
             }
         }
+        //加载更多
+        binding.refresh.setOnRefreshListener(object : RefreshListenerAdapter(){
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                viewModel.loadMore()
+            }
+        })
     }
 
     /**
@@ -195,9 +212,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
     fun search(text: String, isQueryState: Boolean){
         val string = text.trim()
         if (isQueryState && !string.isNullOrEmpty()){
-            _page = 1
             viewModel.addSearchHistory(text)
-            viewModel.loadSearchContent(_page,string)
+            viewModel.load(1,string)
         }
     }
 }

@@ -7,7 +7,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +14,10 @@ import com.bumptech.glide.Glide
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemSearchContentBinding
 import zzz.bing.ticketunion.model.domain.SearchData
+import zzz.bing.ticketunion.utils.ActionActivity
 import java.text.DecimalFormat
 
+@Suppress("UselessCallOnNotNull")
 class SearchContentAdapter: ListAdapter<SearchData,SearchContentViewHolder>(
     object : DiffUtil.ItemCallback<SearchData>(){
         override fun areItemsTheSame(oldItem: SearchData, newItem: SearchData): Boolean {
@@ -32,7 +33,9 @@ class SearchContentAdapter: ListAdapter<SearchData,SearchContentViewHolder>(
         val binding = ItemSearchContentBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         val viewHolder = SearchContentViewHolder(binding)
         viewHolder.itemView.setOnClickListener {
-
+            val item = getItem(viewHolder.adapterPosition)
+            val context = viewHolder.itemView.context
+            ActionActivity.actionTicketActivity(context,item)
         }
         return viewHolder
     }
@@ -40,7 +43,7 @@ class SearchContentAdapter: ListAdapter<SearchData,SearchContentViewHolder>(
     override fun onBindViewHolder(holder: SearchContentViewHolder, position: Int) {
         val context = holder.itemView.context
         val item = getItem(position)
-        holder.binding.textSearchTitle.text = item.title
+        holder.binding.textSearchTitle.text = item._title
         if (item.couponAmount.isNullOrEmpty()){
             holder.binding.textSearchPreferential.text = "来晚了已经领完了"
             holder.binding.textSearchPrice.text = "￥"

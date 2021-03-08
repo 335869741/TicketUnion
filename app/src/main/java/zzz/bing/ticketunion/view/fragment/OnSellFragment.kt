@@ -35,6 +35,7 @@ class OnSellFragment : BaseFragment<FragmentOnSellBinding, OnSellViewModel>() {
                 val allList = _onSellAdapter.currentList
                 allList.addAll(list)
                 _onSellAdapter.submitList(allList)
+                binding.refresh.finishLoadmore()
             }
         })
         viewModel.onSellNetState.observe(viewLifecycleOwner, {

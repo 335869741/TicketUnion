@@ -13,9 +13,9 @@ class SearchHistoryRepository {
         ).userSearchHistoryDao()
     }
 
-    fun addSearchHistory(vararg searchHistory: SearchHistory) = runBlocking {
-        _searchHistoryDao.insertSearchHistory(*searchHistory)
-    }
+//    fun addSearchHistory(vararg searchHistory: SearchHistory) = runBlocking {
+//        _searchHistoryDao.insertSearchHistory(*searchHistory)
+//    }
 
     fun addSearchHistory(vararg searchText: String) = runBlocking {
         val searchHistoryList:ArrayList<SearchHistory> = ArrayList()
