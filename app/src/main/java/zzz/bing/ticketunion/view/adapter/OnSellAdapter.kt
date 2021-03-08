@@ -1,7 +1,5 @@
 package zzz.bing.ticketunion.view.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,15 +9,11 @@ import com.bumptech.glide.Glide
 import zzz.bing.ticketunion.R
 import zzz.bing.ticketunion.databinding.ItemOnSellContentBinding
 import zzz.bing.ticketunion.model.domain.OnSellMapData
-import zzz.bing.ticketunion.model.domain.TicketParcelable
 import zzz.bing.ticketunion.utils.ActionActivity
-import zzz.bing.ticketunion.utils.Constant
-import zzz.bing.ticketunion.utils.TsUtils
 import zzz.bing.ticketunion.utils.UrlUtils
-import zzz.bing.ticketunion.view.activity.TicketActivity
 import java.text.DecimalFormat
 
-class OnSellAdapter():ListAdapter<OnSellMapData,OnSellViewHolder>(
+class OnSellAdapter:ListAdapter<OnSellMapData,OnSellViewHolder>(
     object :DiffUtil.ItemCallback<OnSellMapData>(){
         override fun areItemsTheSame(oldItem: OnSellMapData, newItem: OnSellMapData): Boolean {
             return oldItem.itemId == newItem.itemId
@@ -59,6 +53,4 @@ class OnSellAdapter():ListAdapter<OnSellMapData,OnSellViewHolder>(
             .into(holder.binding.imageOnSellIcon)
     }
 }
-class OnSellViewHolder(val binding:ItemOnSellContentBinding):RecyclerView.ViewHolder(binding.root){
-
-}
+class OnSellViewHolder(val binding:ItemOnSellContentBinding):RecyclerView.ViewHolder(binding.root)

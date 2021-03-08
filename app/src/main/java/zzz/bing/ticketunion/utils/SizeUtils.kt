@@ -1,9 +1,9 @@
 package zzz.bing.ticketunion.utils
 
-import android.content.Context
 import android.util.TypedValue
 import zzz.bing.ticketunion.BaseApplication
 
+@Suppress("unused")
 object SizeUtils {
 
     /**

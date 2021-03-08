@@ -9,7 +9,7 @@ import zzz.bing.ticketunion.utils.Constant
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.view.fragment.HomePagerFragment
 
-class HomePagerAdapter(private val activity: FragmentActivity) : FragmentStateAdapter(activity) {
+class HomePagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
     var titles = ArrayList<Title>()
 
     override fun getItemCount(): Int {

@@ -5,8 +5,7 @@ import android.view.View
 enum class NetLoadState {
     Loading,
     Error,
-    Successful,
-    NoMore
+    Successful
 }
 
 object NetLoadStateUtils {

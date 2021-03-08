@@ -49,7 +49,6 @@ class TicketViewModel(application: Application) : AndroidViewModel(application) 
             }
 
             override fun onFailure(call: Call<TicketTaoCode>, t: Throwable) {
-//                TODO("Not yet implemented")
                 _netState.postValue(NetLoadState.Error)
             }
         })

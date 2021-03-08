@@ -79,4 +79,4 @@ class SearchContentAdapter: ListAdapter<SearchData,SearchContentViewHolder>(
     }
 }
 
-class SearchContentViewHolder(val binding: ItemSearchContentBinding): RecyclerView.ViewHolder(binding.root){}
+class SearchContentViewHolder(val binding: ItemSearchContentBinding): RecyclerView.ViewHolder(binding.root)

@@ -14,7 +14,7 @@ object UrlUtils {
         }
     }
 
-    fun dynamicLoadingUrl(long: Int, url: String): String {
+    private fun dynamicLoadingUrl(long: Int, url: String): String {
         var size = (long % 100) + 1
         if (size > 5) {
             size = 5

@@ -8,8 +8,9 @@ import android.text.style.ReplacementSpan
 import android.util.TypedValue
 
 
+@Suppress("unused")
 class TextRoundBackground(
-        val backgroundColor: Int, val textColor: Int, val context: Context
+    private val backgroundColor: Int, val textColor: Int, val context: Context
 ) : ReplacementSpan() {
 
 

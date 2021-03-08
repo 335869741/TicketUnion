@@ -10,7 +10,7 @@ import zzz.bing.ticketunion.databinding.ItemChoicenessCategoryBinding
 import zzz.bing.ticketunion.model.domain.ChoicenessCategory
 import zzz.bing.ticketunion.viewmodel.ChoicenessViewModel
 
-class ChoicenessCategoryAdapter(val viewModel: ChoicenessViewModel):ListAdapter<ChoicenessCategory,ChoicenessCategoryViewHolder>(
+class ChoicenessCategoryAdapter(private val viewModel: ChoicenessViewModel):ListAdapter<ChoicenessCategory,ChoicenessCategoryViewHolder>(
     object :DiffUtil.ItemCallback<ChoicenessCategory>(){
         override fun areItemsTheSame(
             oldItem: ChoicenessCategory, newItem: ChoicenessCategory

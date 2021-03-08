@@ -14,6 +14,7 @@ import zzz.bing.ticketunion.utils.ActionActivity
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.UrlUtils
 
+@Suppress("unused")
 class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapter<ChoicenessContentMapData,ChoicenessContentViewHolder>(
     object :DiffUtil.ItemCallback<ChoicenessContentMapData>(){
         override fun areItemsTheSame(oldItem: ChoicenessContentMapData, newItem: ChoicenessContentMapData): Boolean {
@@ -63,6 +64,4 @@ class ChoicenessContentAdapter(private val activity: FragmentActivity):ListAdapt
             .into(binding.imageIcon)
     }
 }
-class ChoicenessContentViewHolder(val binding: ItemChoicenessContentBinding):RecyclerView.ViewHolder(binding.root){
-
-}
+class ChoicenessContentViewHolder(val binding: ItemChoicenessContentBinding):RecyclerView.ViewHolder(binding.root)

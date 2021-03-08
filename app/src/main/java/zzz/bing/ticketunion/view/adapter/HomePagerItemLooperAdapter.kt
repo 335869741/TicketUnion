@@ -11,6 +11,7 @@ import zzz.bing.ticketunion.model.domain.ItemContent
 import zzz.bing.ticketunion.utils.LogUtils
 import zzz.bing.ticketunion.utils.UrlUtils
 
+@Suppress("unused")
 class HomePagerItemLooperAdapter : ListAdapter<ItemContent, HomePagerItemLooperViewHolder>(
     object : DiffUtil.ItemCallback<ItemContent>() {
         override fun areItemsTheSame(oldItem: ItemContent, newItem: ItemContent): Boolean {
@@ -49,7 +50,4 @@ class HomePagerItemLooperAdapter : ListAdapter<ItemContent, HomePagerItemLooperV
 
 }
 
-class HomePagerItemLooperViewHolder(val binding: ItemHomePagerLooperBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-
-}
+class HomePagerItemLooperViewHolder(val binding: ItemHomePagerLooperBinding) : RecyclerView.ViewHolder(binding.root)

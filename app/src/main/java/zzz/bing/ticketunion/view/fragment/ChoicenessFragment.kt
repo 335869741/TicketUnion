@@ -1,13 +1,10 @@
 package zzz.bing.ticketunion.view.fragment
 
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.databinding.FragmentChoicenessBinding
 import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.utils.NetLoadStateUtils
 import zzz.bing.ticketunion.view.adapter.ChoicenessCategoryAdapter
 import zzz.bing.ticketunion.view.adapter.ChoicenessContentAdapter

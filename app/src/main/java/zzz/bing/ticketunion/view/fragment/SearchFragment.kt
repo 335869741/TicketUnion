@@ -168,7 +168,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         /**
          * 输入框
          */
-        binding.editTextSearch.setOnEditorActionListener { v, actionId, event ->
+        binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEND){
                 binding.textSearchButton.performClick()
             }

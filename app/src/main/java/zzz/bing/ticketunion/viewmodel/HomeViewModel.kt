@@ -13,6 +13,7 @@ import zzz.bing.ticketunion.model.domain.*
 import zzz.bing.ticketunion.utils.*
 import java.net.HttpURLConnection
 
+@Suppress("unused")
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     private var _homePageSave: Map<Int, List<ItemContent>>? = null

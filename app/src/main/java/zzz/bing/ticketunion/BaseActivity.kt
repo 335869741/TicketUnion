@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 
+@Suppress("SameParameterValue")
 abstract class BaseActivity<T : ViewBinding, V : ViewModel> : AppCompatActivity() {
 
     protected lateinit var binding: T

@@ -1,6 +1,5 @@
 package zzz.bing.ticketunion.view.fragment
 
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager

@@ -4,7 +4,6 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -100,7 +99,7 @@ class TicketActivity : BaseActivity<ActivityTicketBinding, TicketViewModel>() {
         return super.onSupportNavigateUp()
     }
 
-    fun loadData(){
+    private fun loadData(){
         viewModel.load(ticketParcelable!!)
         val url = UrlUtils.urlJoinHttp(ticketParcelable!!.pic)
         Glide.with(this)

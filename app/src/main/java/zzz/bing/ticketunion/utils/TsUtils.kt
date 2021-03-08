@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package zzz.bing.ticketunion.utils
 
 import android.content.Context

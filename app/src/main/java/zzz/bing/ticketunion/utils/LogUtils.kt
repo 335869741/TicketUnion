@@ -2,6 +2,7 @@ package zzz.bing.ticketunion.utils
 
 import android.util.Log
 
+@Suppress("unused")
 object LogUtils {
     private const val CURRENT_LEVEL = 5
     private const val DEBUG_LEVEL = 4

@@ -1,17 +1,16 @@
 package zzz.bing.ticketunion.view.fragment
 
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.databinding.FragmentHomeBinding
 import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.NetLoadState
 import zzz.bing.ticketunion.utils.NetLoadStateUtils
 import zzz.bing.ticketunion.view.adapter.HomePagerAdapter
 import zzz.bing.ticketunion.viewmodel.HomeViewModel
 
+@Suppress("RedundantSamConstructor")
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private val _homePagerAdapter by lazy {

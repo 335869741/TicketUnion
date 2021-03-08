@@ -20,7 +20,8 @@ import zzz.bing.ticketunion.utils.*
 import java.text.DecimalFormat
 
 
-class HomePagerItemAdapter(private val activity: FragmentActivity) :
+@Suppress("UNUSED_PARAMETER")
+class HomePagerItemAdapter(activity: FragmentActivity) :
     ListAdapter<ItemContent, HomePagerItemViewHolder>(
         object : DiffUtil.ItemCallback<ItemContent>() {
             override fun areItemsTheSame(oldItem: ItemContent, newItem: ItemContent): Boolean {
@@ -107,7 +108,4 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
 
 }
 
-class HomePagerItemViewHolder(val binding: ItemHomePagerBinding) :
-    RecyclerView.ViewHolder(binding.root) {
-
-}
+class HomePagerItemViewHolder(val binding: ItemHomePagerBinding) : RecyclerView.ViewHolder(binding.root)
