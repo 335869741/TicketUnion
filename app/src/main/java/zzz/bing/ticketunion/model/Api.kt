@@ -49,7 +49,11 @@ interface Api {
     fun getSearchRecommend(): Call<SearchRecommend>
 
     @GET("search")
-    fun getSearchContent(
-        @Query("page") page: String, @Query("keyword ") keyword: String
-    ): Call<SearchPageContent>
+    fun getSearchContent(@Query("page") page: Int, @Query("keyword ") keyword: String): Call<SearchPageContent>
+
+    @GET
+    fun getSearchContent(@Url url: String): Call<SearchPageContent>
+
+    @GET("search")
+    fun getSearchContent(@QueryMap params:Map<String,String>): Call<SearchPageContent>
 }

@@ -33,9 +33,13 @@
     <string name="textPreferentialPrompt">领券省%s</string>
     <string name="imageOnSellIcon">imageOnSellIcon</string>
     <string name="onSellPrice">￥%s  券后价:%s</string>
-    <string name="editTextSearch">editTextSearch</string>
-    <string name="textSearchButton">搜索</string>
-    <string name="textSearchHistory">textSearchHistory</string>
-    <string name="imageSearchHistory">imageSearchHistory</string>
+    <string name="editTextSearch">搜索</string>
+    <string name="textSearchButton">取消</string>
+    <string name="textSearchHistory">搜索历史</string>
+    <string name="imageSearchHistory">搜索历史</string>
     <string name="textRecommended">热搜推荐</string>
+    <string name="imageSearchIcon">搜索图标</string>
+    <string name="textSearchTitle">搜索商品标题</string>
+    <string name="textSearchPreferential">商品优惠</string>
+    <string name="textSearchPrice">搜索价格</string>
 </resources>

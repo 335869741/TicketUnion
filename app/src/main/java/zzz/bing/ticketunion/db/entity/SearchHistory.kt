@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "search_history")
 data class SearchHistory @JvmOverloads constructor(
     @ColumnInfo(name = "id")
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
     @ColumnInfo(name = "search_text")
     var searchText:String = "searchText"

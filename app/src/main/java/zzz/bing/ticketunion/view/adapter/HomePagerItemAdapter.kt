@@ -71,8 +71,8 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
                 R.color.white
             )
         )
-        //= ContextCompat.getColor(holder.itemView.context,R.color.white)
-        val spannableString = SpannableString("￥${item.zkFinalPrice}")
+        val price = DecimalFormat("0.0").format(item.zkFinalPrice.toFloat() - item.couponAmount.toFloat())
+        val spannableString = SpannableString("￥${price}")
         val colorSpan = ForegroundColorSpan(Color.parseColor("#F5A623"))
         spannableString.setSpan(
             colorSpan,
@@ -83,8 +83,7 @@ class HomePagerItemAdapter(private val activity: FragmentActivity) :
         holder.binding.textItemPrice.text = "券后  "
         holder.binding.textItemPrice.append(spannableString)
         holder.binding.textItemPrice.append("  ")
-        val price = item.couponAmount + item.zkFinalPrice.toFloat()
-        val priceSpannable = SpannableString("￥${price}")
+        val priceSpannable = SpannableString("￥${item.zkFinalPrice}")
         priceSpannable.setSpan(
             StrikethroughSpan(),
             0,

@@ -1,20 +1,33 @@
 package zzz.bing.ticketunion.view.fragment
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import zzz.bing.ticketunion.BaseFragment
 import zzz.bing.ticketunion.customview.FlowText
 import zzz.bing.ticketunion.databinding.FragmentSearchBinding
 import zzz.bing.ticketunion.utils.LogUtils
+import zzz.bing.ticketunion.utils.NetLoadState
+import zzz.bing.ticketunion.utils.NetLoadStateUtils
+import zzz.bing.ticketunion.view.adapter.SearchContentAdapter
 import zzz.bing.ticketunion.viewmodel.HomeViewModel
 import zzz.bing.ticketunion.viewmodel.SearchViewModel
+import java.lang.StringBuilder
 import java.util.ArrayList
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
+    private var _queryState = false
+    private val _editString = StringBuilder()
+    private val _adapter by lazy { SearchContentAdapter() }
+    private var _page = 1
+
     override fun initViewBinding(): FragmentSearchBinding {
         return FragmentSearchBinding.inflate(layoutInflater)
     }
@@ -26,11 +39,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     override fun initData() {
         viewModel.loadSearchRecommend()
-        binding.flowTextSearchHistory.visibility = View.GONE
-        binding.constraintSearchHistory.visibility = View.GONE
+    }
+
+    override fun initView() {
+        binding.recycler.adapter = _adapter
+        binding.recycler.layoutManager = LinearLayoutManager(view?.context)
     }
 
     override fun initObserver() {
+        /**
+         * 热搜推荐关键词
+         */
         viewModel.searchRecommend.observe(viewLifecycleOwner, {searchList ->
             val list = ArrayList<String>()
             searchList.forEach {
@@ -40,7 +59,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             if (list.isEmpty()) return@observe
             binding.flowTextRecommended.setTextList(list)
         })
-
+        /**
+         * 搜索历史
+         */
         viewModel.searchHistory.observe(viewLifecycleOwner, { historyList ->
             val list = ArrayList<String>()
             historyList.forEach {
@@ -48,42 +69,135 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
             }
             LogUtils.d(this, "list ==> $list")
             if (list.isEmpty()) {
-                binding.flowTextSearchHistory.visibility = View.GONE
                 binding.constraintSearchHistory.visibility = View.GONE
                 return@observe
             }
-            binding.flowTextSearchHistory.visibility = View.VISIBLE
             binding.constraintSearchHistory.visibility = View.VISIBLE
             binding.flowTextSearchHistory.setTextList(list)
         })
-
-        viewModel.searchContent.observe(viewLifecycleOwner, {
-            // TODO: 2021/3/8  适配器加载数据
+        /**
+         * 搜索结果
+         */
+        viewModel.searchContent.observe(viewLifecycleOwner, {list ->
+            list?.apply {
+                if (isNotEmpty()){
+                    _adapter.submitList(this)
+                }
+            }
+        })
+        /**
+         * 加载状态
+         */
+        viewModel.searchLoadState.observe(viewLifecycleOwner, {state ->
+            NetLoadStateUtils.viewStateChange(
+                binding.includeLoading.root,
+                binding.includeLoadError.root,
+                binding.refresh,
+                state
+            )
+            binding.key.visibility = View.GONE
         })
     }
 
     override fun initListener() {
+        /**
+         * 历史记录item
+         */
         binding.flowTextSearchHistory.setOnItemClickListener(object : FlowText.OnItemClickListener{
-            @Suppress("UselessCallOnNotNull")
             override fun itemClickListener(view: View, text: String) {
-                val string = text.trim()
-                if (!string.isNullOrEmpty()){
-                    viewModel.addSearchHistory(text)
-                    viewModel.loadSearchContent(1,string)
-                }
+                LogUtils.d(this@SearchFragment,"text ==> $text")
+                search(text, true)
             }
         })
+        /**
+         * 精选推荐item
+         */
+        binding.flowTextRecommended.setOnItemClickListener(object :FlowText.OnItemClickListener{
+            override fun itemClickListener(view: View, text: String) {
+                LogUtils.d(this@SearchFragment,"text ==> $text")
+                search(text, true)
+            }
+        })
+        /**
+         * 搜索按钮
+         */
         binding.textSearchButton.setOnClickListener {
-            // TODO: 2021/3/8
+            LogUtils.d(this,"editString ==> $_editString")
+            search(_editString.toString(), _queryState)
+            it.requestFocus()
         }
+        /**
+         * 检测输入
+         */
         binding.editTextSearch.addTextChangedListener {
             it?.apply {
-                if (!trim().isEmpty()){
+                if (trim().isNotEmpty()){
                     binding.textSearchButton.text = "搜索"
+                    _editString.setLength(0)
+                    _editString.append(this)
+                    _queryState = true
                 }else{
                     binding.textSearchButton.text = "取消"
+                    _editString.setLength(0)
+                    _queryState = false
+
                 }
             }
+        }
+        /**
+         * 输入框获取焦点
+         */
+        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus){
+                binding.key.visibility = View.VISIBLE
+                binding.includeLoadError.root.visibility = View.GONE
+                binding.includeLoading.root.visibility = View.GONE
+                binding.refresh.visibility = View.GONE
+            }
+        }
+        /**
+         * 输入框
+         */
+        binding.editTextSearch.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEND){
+                binding.textSearchButton.performClick()
+            }
+            return@setOnEditorActionListener false
+        }
+        /**
+         * 清空历史
+         */
+        binding.imageSearchHistory.setOnClickListener {
+            viewModel.searchHistory.value?.apply {
+                if (!isNullOrEmpty()){
+                    AlertDialog.Builder(requireActivity())
+                        .setTitle("清空历史记录")
+                        .setPositiveButton("确定") { _, _ ->
+                            viewModel.deleteSearchHistory()
+                        }.setNegativeButton("取消"){ _, _ ->
+                        }.create()
+                        .show()
+                    LogUtils.d(this, "searchHistory ==> ${viewModel.searchHistory}")
+                }
+            }
+        }
+        binding.includeLoadError.root.setOnClickListener {
+            if (viewModel.searchLoadState.value == NetLoadState.Error){
+                viewModel.reLoad()
+            }
+        }
+    }
+
+    /**
+     * 搜索
+     */
+    @Suppress("UselessCallOnNotNull")
+    fun search(text: String, isQueryState: Boolean){
+        val string = text.trim()
+        if (isQueryState && !string.isNullOrEmpty()){
+            _page = 1
+            viewModel.addSearchHistory(text)
+            viewModel.loadSearchContent(_page,string)
         }
     }
 }

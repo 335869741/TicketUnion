@@ -26,7 +26,7 @@ class SearchHistoryRepository {
         _searchHistoryDao.insertSearchHistory(*searchHistoryArray)
     }
 
-    fun deleteAllSearchHistory() = runBlocking{
+    fun removeAllSearchHistory() = runBlocking{
         _searchHistoryDao.deleteAllSearchHistory()
     }
 
@@ -36,6 +36,10 @@ class SearchHistoryRepository {
 
     suspend fun getSearchHistory(searchText:String):List<SearchHistory>{
         return _searchHistoryDao.findSearchHistoryBySearchText(searchText)
+    }
+
+    fun removeSearchHistory(vararg searchHistory: SearchHistory) = runBlocking{
+        _searchHistoryDao.deleteSearchHistory(*searchHistory)
     }
 
 }

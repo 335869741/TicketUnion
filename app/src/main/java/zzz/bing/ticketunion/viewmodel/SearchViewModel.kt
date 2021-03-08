@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,9 +16,7 @@ import zzz.bing.ticketunion.model.domain.SearchData
 import zzz.bing.ticketunion.model.domain.SearchPageContent
 import zzz.bing.ticketunion.model.domain.SearchRecommend
 import zzz.bing.ticketunion.model.domain.SearchRecommendContent
-import zzz.bing.ticketunion.utils.Constant
-import zzz.bing.ticketunion.utils.LogUtils
-import zzz.bing.ticketunion.utils.RetrofitManager
+import zzz.bing.ticketunion.utils.*
 import java.net.HttpURLConnection
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
@@ -29,10 +26,15 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val _searchRecommend: MutableLiveData<List<SearchRecommendContent>> by lazy { MutableLiveData() }
     private val _searchContent: MutableLiveData<List<SearchData>> by lazy { MutableLiveData() }
     private val _searchHistory: LiveData<List<SearchHistory>> by lazy { _searchHistoryRepository.getAllSearchHistory() }
+    private val _searchLoadState = MutableLiveData<NetLoadState>()
 
-    val searchRecommend:LiveData<List<SearchRecommendContent>> get() = _searchRecommend
-    val searchContent:LiveData<List<SearchData>> get() = _searchContent
-    val searchHistory:LiveData<List<SearchHistory>> get() = _searchHistory
+    val searchRecommend: LiveData<List<SearchRecommendContent>> get() = _searchRecommend
+    val searchContent: LiveData<List<SearchData>> get() = _searchContent
+    val searchHistory: LiveData<List<SearchHistory>> get() = _searchHistory
+    val searchLoadState: LiveData<NetLoadState> get() = _searchLoadState
+
+    private var _searchText: String? = null
+    private var _searchPage: Int? = null
 
     init {
         loadSearchRecommend()
@@ -46,7 +48,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             ) {
                 if (response.code() == HttpURLConnection.HTTP_OK && response.body()?.code == Constant.RESPONSE_OK) {
                     val body = response.body()?.searchRecommendList
-                    LogUtils.d(this@SearchViewModel, "searchRecommend ==> $body")
                     _searchRecommend.postValue(body)
                 } else {
                     LogUtils.d(this@SearchViewModel, "code == ${response.code()}")
@@ -60,7 +61,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun loadSearchContent(page: Int, keyword: String) {
-        _api.getSearchContent(page.toString(), keyword).enqueue(object :
+        _searchLoadState.value = NetLoadState.Loading
+        _searchText = keyword
+        _searchPage = page
+        val map = mapOf<String,String>("page" to page.toString(),"keyword" to keyword)
+//        _api.getSearchContent(page, keyword)
+//        _api.getSearchContent("search?page=$page&keyword=$keyword")
+        _api.getSearchContent(map)
+            .enqueue(object :
             Callback<SearchPageContent> {
             override fun onResponse(
                 call: Call<SearchPageContent>,
@@ -71,36 +79,43 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                         response.body()?.SearchPageData?.searchPageDataResponse?.resultList?.searchPageDataList
                     LogUtils.d(this@SearchViewModel, "body ==> $body")
                     _searchContent.postValue(body)
+                    _searchLoadState.value = NetLoadState.Successful
                 } else {
                     LogUtils.d(this@SearchViewModel, "code == ${response.code()}")
+                    LogUtils.d(this@SearchViewModel, "body ==> ${response.body()}")
+                    _searchLoadState.value = NetLoadState.Error
                 }
             }
 
             override fun onFailure(call: Call<SearchPageContent>, t: Throwable) {
                 LogUtils.d(this@SearchViewModel, "Throwable ==> $t")
+                _searchLoadState.value = NetLoadState.Error
             }
         })
     }
 
     fun addSearchHistory(searchText: String) {
         viewModelScope.launch {
-            if (isExist(searchText)){
-                _searchHistoryRepository.addSearchHistory(searchText)
+            val list = getSearchHistory(searchText)
+            if (list.isNotEmpty()){
+                _searchHistoryRepository.removeSearchHistory(* list.toTypedArray())
             }
+            _searchHistoryRepository.addSearchHistory(searchText)
         }
     }
 
     fun deleteSearchHistory() {
-        _searchHistoryRepository.deleteAllSearchHistory()
+        _searchHistoryRepository.removeAllSearchHistory()
     }
 
-//    private fun getAllSearchHistory() {
-//        searchHistory = _searchHistoryRepository.getAllSearchHistory()
-//    }
+    private suspend fun getSearchHistory(string: String): List<SearchHistory>{
+        return _searchHistoryRepository.getSearchHistory(string)
+    }
 
-    private suspend fun isExist(string: String): Boolean{
-        val list = _searchHistoryRepository.getSearchHistory(string)
-        return list.isNullOrEmpty()
+    fun reLoad(){
+        if (_searchPage != null && !_searchText.isNullOrEmpty()){
+            loadSearchContent(_searchPage!!, _searchText!!)
+        }
     }
 
 }
